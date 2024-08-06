@@ -34,21 +34,39 @@ const {width,height} = Dimensions.get("screen");
   ]
 const Home = ({navigation}) => {
   const [searchText, setSearchText] = useState('');
-    let [fontsLoaded] = useFonts({Poppins_400Regular,Poppins_500Medium,Poppins_600SemiBold,Poppins_700Bold,});
-    const clearSearch = () => {
-      setSearchText('');
-    };
-    if (!fontsLoaded) {
-      return <ActivityIndicator size="large" color={Colors.purple}/>;
+  const [isLoading,setLoading] = useState(false);
+
+  let [fontsLoaded] = useFonts({Poppins_400Regular,Poppins_500Medium,Poppins_600SemiBold,Poppins_700Bold,});
+  const clearSearch = () => {
+    setSearchText('');
+  };
+  if (!fontsLoaded) {
+    return <ActivityIndicator size="large" color={Colors.purple}/>;
+  }
+  const getPriorityColor = (priority) => {
+    switch(priority){
+      case "Immediate" :
+        return Colors.danger;
+      default :
+        return Colors.warning
     }
-    const getPriorityColor = (priority) =>{
-      switch(priority){
-        case "Immediate" :
-          return Colors.danger;
-          default :
-          return Colors.warning
-      }
-    }
+  }
+  const filteredProjects = projectData.filter(project =>
+    project.title.toLowerCase().includes(searchText.toLowerCase()) ||
+    project.customerName.toLowerCase().includes(searchText.toLowerCase())
+  );
+
+  const filteredTasks = taskData.filter(task =>
+    task.taskTitle.toLowerCase().includes(searchText.toLowerCase()) ||
+    task.projectTitle.toLowerCase().includes(searchText.toLowerCase())
+  );
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, backgroundColor: Colors.backGround, alignItems: "center", justifyContent: "center" }}>
+        <ActivityIndicator size='large' color={Colors.purple} />
+      </View>
+    )
+  }
   return (
     <SafeAreaView style={{flex:1}}>
       <StatusBar backgroundColor={Colors.backGround} barStyle='dark-content' />
@@ -81,65 +99,73 @@ const Home = ({navigation}) => {
               </TouchableOpacity>
             )}
           </View>
-          <View style={{flexDirection:"row",justifyContent:"space-between",paddingTop:15,paddingBottom:15}}>
-            <Text  style={{fontFamily:"Poppins_700Bold"}}>Projects</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('HomeScreen',{screen:'Project'})}>
-              <Text style={{fontFamily:"Poppins_500Medium"}}>See All</Text>
-            </TouchableOpacity>
-          </View>
-          <View>
-            <FlatList
-             horizontal
-             data={projectData}
-             keyExtractor={(item,index) => index.toString()}
-             showsHorizontalScrollIndicator={false}
-             style={{}}
-             renderItem={({ item }) => (
-              <TouchableOpacity style={{borderRadius:10,width:200,height:200,paddingRight:10,}} onPress={ () => navigation.navigate("ProjectDetails",{item})}>
-                <ImageBackground style={{width:"100%",height:"100%",justifyContent:"space-between"}} source={require("../../assets/Images/background2.jpeg")} imageStyle={{borderRadius:10,}}> 
-                  <View style={{paddingTop:10,justifyContent:"flex-end",alignItems:"flex-end",paddingRight:10}}>
-                    <Text style={{paddingLeft:15,color:Colors.white,textTransform:"uppercase",fontFamily:"Poppins_500Medium",fontSize:12}}>{item.status}</Text>
-                  </View>
-                  <View style={{paddingLeft:10,paddingRight:10,paddingBottom:15}}>
-                    <Text style={{color:Colors.white,fontSize:18,fontFamily:"Poppins_600SemiBold",textTransform:"uppercase"}}>{item.title}</Text>
-                    <Text style={{color:Colors.white,fontFamily:"Poppins_500Medium",textTransform:"capitalize",fontSize:12}}>{item.customerName}</Text>
-                    <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center",gap:5,paddingTop:20}}>
-                      <Progress.Bar progress={item.percentage/100} width={140} animated={true} color={Colors.white} />
-                      <Text style={{fontFamily:"Poppins_500Medium",fontSize:12,color:Colors.white,}}>{item.percentage}%</Text>
+          {filteredProjects.length > 0 && (
+            <>
+              <View style={{flexDirection:"row",justifyContent:"space-between",paddingTop:15,paddingBottom:15}}>
+                <Text  style={{fontFamily:"Poppins_700Bold"}}>Projects</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('HomeScreen',{screen:'Project'})}>
+                  <Text style={{fontFamily:"Poppins_500Medium"}}>See All</Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                <FlatList
+                 horizontal
+                 data={filteredProjects}
+                 keyExtractor={(item,index) => index.toString()}
+                 showsHorizontalScrollIndicator={false}
+                 style={{}}
+                 renderItem={({ item }) => (
+                  <TouchableOpacity style={{borderRadius:10,width:200,height:200,paddingRight:10,}} onPress={ () => navigation.navigate("ProjectDetails",{item})}>
+                    <ImageBackground style={{width:"100%",height:"100%",justifyContent:"space-between"}} source={require("../../assets/Images/background2.jpeg")} imageStyle={{borderRadius:10,}}> 
+                      <View style={{paddingTop:10,justifyContent:"flex-end",alignItems:"flex-end",paddingRight:10}}>
+                        <Text style={{paddingLeft:15,color:Colors.white,textTransform:"uppercase",fontFamily:"Poppins_500Medium",fontSize:12}}>{item.status}</Text>
+                      </View>
+                      <View style={{paddingLeft:10,paddingRight:10,paddingBottom:15}}>
+                        <Text style={{color:Colors.white,fontSize:18,fontFamily:"Poppins_600SemiBold",textTransform:"uppercase"}}>{item.title}</Text>
+                        <Text style={{color:Colors.white,fontFamily:"Poppins_500Medium",textTransform:"capitalize",fontSize:12}}>{item.customerName}</Text>
+                        <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center",gap:5,paddingTop:20}}>
+                          <Progress.Bar progress={item.percentage/100} width={140} animated={true} color={Colors.white} />
+                          <Text style={{fontFamily:"Poppins_500Medium",fontSize:12,color:Colors.white,}}>{item.percentage}%</Text>
+                        </View>
+                      </View>
+                    </ImageBackground>
+                  </TouchableOpacity>
+                 )}
+                />
+              </View>
+            </>
+          )}
+          {filteredTasks.length > 0 && (
+            <>
+              <View style={{flexDirection:"row",justifyContent:"space-between",paddingTop:25,paddingBottom:15}}>
+                <Text  style={{fontFamily:"Poppins_700Bold"}}>Tasks</Text>
+                <TouchableOpacity onPress={() => navigation.navigate("TaskScreen")}>
+                  <Text style={{fontFamily:"Poppins_500Medium"}}>See All</Text>
+                </TouchableOpacity>
+              </View>
+              <FlatList 
+                data={filteredTasks}
+                keyExtractor={(item,index) => index.toString()}
+                showsVerticalScrollIndicator={false}
+                renderItem={({item}) => (
+                  <TouchableOpacity style={{backgroundColor:Colors.white,marginBottom:15,padding:10,flexDirection:"row",justifyContent:"space-between",elevation:2,margin:2,paddingTop:15,paddingBottom:15,width:"100%"}} onPress={() => navigation.navigate("TaskDetails",{item})}>
+                    <View style={{flexDirection:"row",width:"80%"}}>
+                      <View style={{backgroundColor:Colors.purple,width:50,height:50,borderRadius:5,alignItems:"center",justifyContent:"center"}}>
+                        <Text style={{color:Colors.white,fontFamily:"Poppins_600SemiBold",textTransform:"uppercase"}}>{item.projectTitle.charAt(0)}</Text>
+                      </View>
+                      <View style={{paddingLeft:10,width:"80%",}}>
+                        <Text style={{fontFamily:"Poppins_600SemiBold",textTransform:"uppercase"}}>{item.taskTitle}</Text>
+                        <Text style={{fontFamily:"Poppins_500Medium",textTransform:"capitalize",fontSize:12}}>{item.projectTitle}</Text>
+                      </View>
                     </View>
-                  </View>
-                </ImageBackground>
-              </TouchableOpacity>
-             )}
-            />
-          </View>
-          <View style={{flexDirection:"row",justifyContent:"space-between",paddingTop:25,paddingBottom:15}}>
-            <Text  style={{fontFamily:"Poppins_700Bold"}}>Tasks</Text>
-            <TouchableOpacity onPress={() => navigation.navigate("TaskScreen")}>
-            <Text style={{fontFamily:"Poppins_500Medium"}}>See All</Text>
-            </TouchableOpacity>
-          </View>
-          <FlatList 
-            data={taskData}
-            keyExtractor={(item,index) => index.toString()}
-            showsVerticalScrollIndicator={false}
-            renderItem={({item}) => (
-              <TouchableOpacity style={{backgroundColor:Colors.white,marginBottom:15,padding:10,flexDirection:"row",justifyContent:"space-between",elevation:2,margin:2,paddingTop:15,paddingBottom:15,width:"100%"}} onPress={() => navigation.navigate("TaskDetails",{item})}>
-                <View style={{flexDirection:"row",width:"80%"}}>
-                  <View style={{backgroundColor:Colors.purple,width:50,height:50,borderRadius:5,alignItems:"center",justifyContent:"center"}}>
-                    <Text style={{color:Colors.white,fontFamily:"Poppins_600SemiBold",textTransform:"uppercase"}}>{item.projectTitle.charAt(0)}</Text>
-                  </View>
-                  <View style={{paddingLeft:10,width:"80%",}}>
-                    <Text style={{fontFamily:"Poppins_600SemiBold",textTransform:"uppercase"}}>{item.taskTitle}</Text>
-                    <Text style={{fontFamily:"Poppins_500Medium",textTransform:"capitalize",fontSize:12}}>{item.projectTitle}</Text>
-                  </View>
-                </View>
-                <View style={{width:"20%",alignItems:"flex-end",}}>
-                  <Text style={{textTransform:"uppercase",fontFamily:"Poppins_500Medium",fontSize:10,color:getPriorityColor(item.priority)}}>{item.priority}</Text>
-                </View>
-              </TouchableOpacity>
-            )}
-          />
+                    <View style={{width:"20%",alignItems:"flex-end",}}>
+                      <Text style={{textTransform:"uppercase",fontFamily:"Poppins_500Medium",fontSize:10,color:getPriorityColor(item.priority)}}>{item.priority}</Text>
+                    </View>
+                  </TouchableOpacity>
+                )}
+              />
+            </>
+          )}  
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -10,8 +10,20 @@ const LoginScreen = ({navigation}) => {
   let [fontsLoaded] = useFonts({Poppins_400Regular,Poppins_500Medium,Poppins_600SemiBold,Poppins_700Bold,});
   const [password,setPassword] = useState('');
   const [showPassword,setShowPassword] = useState(false);
+  const [isLoading,setLoading] = useState(false);
+
   if (!fontsLoaded) {
     return <ActivityIndicator size="large" color={Colors.purple}/>;
+  }
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, backgroundColor: Colors.backGround, alignItems: "center", justifyContent: "center" }}>
+        <ActivityIndicator size='large' color={Colors.purple} />
+      </View>
+    )
+  }
+  const handleLogin = () =>{
+     navigation.navigate("HomeScreen")
   }
   return (
     <SafeAreaView style={{flex:1,backgroundColor:Colors.white}}>
@@ -35,7 +47,7 @@ const LoginScreen = ({navigation}) => {
               </TouchableOpacity>
             </View>
           </View>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("HomeScreen")}>
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
         </View>

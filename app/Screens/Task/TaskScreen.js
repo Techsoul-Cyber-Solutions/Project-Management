@@ -1,10 +1,12 @@
-import { ScrollView, StyleSheet, Text, View, TouchableOpacity,FlatList,StatusBar} from 'react-native'
+import { ScrollView, StyleSheet, Text, View, TouchableOpacity,FlatList,StatusBar,TextInput} from 'react-native'
 import React,{useState} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Colors from '../../Constants/Colors'
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 const TaskScreen = ({navigation}) => {
   const [filter, setFilter] = useState('All');
+  const [searchText, setSearchText] = useState('');
 
   const taskData = [
     { id: 1, taskTitle: "Fees management", projectTitle: "leap", priority: "Immediate", percentage: "80" },
@@ -13,10 +15,9 @@ const TaskScreen = ({navigation}) => {
   ];
 
   const filteredData = taskData.filter(task => {
-    if (filter === 'All') return true;
-    if (filter === 'Ongoing' && task.percentage !== "100") return true;
-    if (filter === 'Completed' && task.percentage === "100") return true;
-    return false;
+    const matchesFilter = (filter === 'All') || (filter === 'Ongoing' && task.percentage !== "100") || (filter === 'Completed' && task.percentage === "100");
+    const matchesSearchText = task.taskTitle.toLowerCase().includes(searchText.toLowerCase()) || task.projectTitle.toLowerCase().includes(searchText.toLowerCase());
+    return matchesFilter && matchesSearchText;
   });
 
   const getPriorityColor = (priority) => {
@@ -29,20 +30,38 @@ const TaskScreen = ({navigation}) => {
         return Colors.black;
     }
   }
+  const clearSearch = () => {
+    setSearchText('');
+  };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backGround }}>
       <StatusBar backgroundColor={Colors.white} barStyle='dark-content' />
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={{ flex: 1, padding: 15 }}>
+        <View style={styles.searchContainer}>
+            <AntDesign name="search1" size={20} color={Colors.grey} />
+            <TextInput
+              style={styles.input}
+              placeholder="Search"
+              value={searchText}
+              onChangeText={setSearchText}
+              cursorColor={Colors.purple}
+            />
+            {searchText.length > 0 && (
+              <TouchableOpacity onPress={clearSearch}>
+                <AntDesign name="close" size={20} color={Colors.grey} />
+              </TouchableOpacity>
+            )}
+          </View>
           <View style={styles.filterContainer}>
-            <TouchableOpacity style={[styles.filterButton, filter === 'All' && styles.activeFilter]} onPress={() => setFilter('All')}>
-              <Text style={[styles.filterText,filter === 'All' && styles.activeText]}>All</Text>
+            <TouchableOpacity style={styles.filterButton} onPress={() => setFilter('All')}>
+              <Text style={[styles.filterText, filter === 'All' && styles.activeText]}>All</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.filterButton, filter === 'Ongoing' && styles.activeFilter]} onPress={() => setFilter('Ongoing')}>
-              <Text style={[styles.filterText,filter === 'Ongoing' && styles.activeText]}>Ongoing</Text>
+            <TouchableOpacity style={styles.filterButton} onPress={() => setFilter('Ongoing')}>
+              <Text style={[styles.filterText, filter === 'Ongoing' && styles.activeText]}>Ongoing</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.filterButton, filter === 'Completed' && styles.activeFilter]} onPress={() => setFilter('Completed')}>
-              <Text style={[styles.filterText,filter === 'Completed' && styles.activeText]}>Completed</Text>
+            <TouchableOpacity style={styles.filterButton} onPress={() => setFilter('Completed')}>
+              <Text style={[styles.filterText, filter === 'Completed' && styles.activeText]}>Completed</Text>
             </TouchableOpacity>
           </View>
           <FlatList
@@ -51,7 +70,7 @@ const TaskScreen = ({navigation}) => {
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
               <TouchableOpacity style={styles.taskContainer} onPress={() => navigation.navigate("TaskDetails",{item})}>
-                <View style={{ flexDirection: "row" }}>
+                <View style={{flexDirection:"row",width:"80%"}}>
                   <View style={styles.projectIcon}>
                     <Text style={styles.projectIconText}>{item.projectTitle.charAt(0)}</Text>
                   </View>
@@ -60,7 +79,9 @@ const TaskScreen = ({navigation}) => {
                     <Text style={styles.projectTitle}>{item.projectTitle}</Text>
                   </View>
                 </View>
-                <Text style={[styles.priority, {color: getPriorityColor(item.priority)}]}>{item.priority}</Text>
+                <View style={{width:"20%",alignItems:"flex-end",}}>
+                  <Text style={{textTransform:"uppercase",fontFamily:"Poppins_500Medium",fontSize:10,color:getPriorityColor(item.priority)}}>{item.priority}</Text>
+                </View>
               </TouchableOpacity>
             )}
           />
@@ -117,12 +138,12 @@ const styles = StyleSheet.create({
   },
   projectIconText: {
     color: Colors.white,
-    fontSize: 18,
+    // fontSize: 18,
     fontFamily: "Poppins_600SemiBold",
     textTransform: "uppercase",
   },
   taskTitle: {
-    fontSize: 18,
+    // fontSize: 18,
     fontFamily: "Poppins_600SemiBold",
     textTransform: "uppercase",
   },
@@ -131,10 +152,19 @@ const styles = StyleSheet.create({
     textTransform: "capitalize",
     fontSize: 12,
   },
-  priority: {
-    paddingLeft: 15,
-    textTransform: "uppercase",
-    fontFamily: "Poppins_500Medium",
-    fontSize: 12,
+  searchContainer:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 10,
+    padding: 10,
+    marginLeft:10,
+    marginRight:10,
+    marginBottom:15,
+    backgroundColor:Colors.white,
+    elevation:2
+  },
+  input: {
+    flex: 1,
+    paddingLeft:10
   },
 })
