@@ -1,9 +1,11 @@
-import { StyleSheet, Text, View,StatusBar,ScrollView,ActivityIndicator, TouchableOpacity, TextInput, Dimensions } from 'react-native'
-import React ,{useState} from 'react'
+import { StyleSheet, Text, View,StatusBar,ScrollView,Keyboard,Platform,ActivityIndicator, TouchableOpacity, TextInput, Dimensions, KeyboardAvoidingView } from 'react-native'
+import React ,{useState,useEffect} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Colors from '../Constants/Colors'
 import {  useFonts,Poppins_400Regular,Poppins_500Medium,Poppins_600SemiBold,Poppins_700Bold,} from '@expo-google-fonts/poppins';
 import { Ionicons } from '@expo/vector-icons';
+import Toast from 'react-native-toast-message';
+import toastConfig from '../Constants/toastConfig';
 const {width,height} = Dimensions.get("screen");
 
 const LoginScreen = ({navigation}) => {
@@ -11,10 +13,22 @@ const LoginScreen = ({navigation}) => {
   const [password,setPassword] = useState('');
   const [showPassword,setShowPassword] = useState(false);
   const [isLoading,setLoading] = useState(false);
+  const [username,setUsername] = useState('');
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => setKeyboardOpen(true));
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => setKeyboardOpen(false));
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   if (!fontsLoaded) {
     return <ActivityIndicator size="large" color={Colors.purple}/>;
   }
+
   if (isLoading) {
     return (
       <View style={{ flex: 1, backgroundColor: Colors.backGround, alignItems: "center", justifyContent: "center" }}>
@@ -23,22 +37,26 @@ const LoginScreen = ({navigation}) => {
     )
   }
   const handleLogin = () =>{
-     navigation.navigate("HomeScreen")
+    console.log(username,password);
+    if(username=== '' || password === ''){
+      Toast.show({
+        type: 'error',
+        text1: 'Missing Fields',
+        text2: 'Please fill the required fields.'
+      });
+      return
+    }
+    navigation.navigate("HomeScreen")
   }
   return (
     <SafeAreaView style={{flex:1,backgroundColor:Colors.white}}>
       <StatusBar backgroundColor={Colors.white} barStyle='dark-content' />
-      <ScrollView contentContainerStyle={{flexGrow:1}}>
+      <ScrollView contentContainerStyle={{flexGrow:1}} keyboardShouldPersistTaps={'handled'}>
         <View style={{flex:1,padding:15,paddingTop:65}}>
-          {/* <View style={{width:100,height:100,borderRadius:50,borderWidth:1,borderColor:Colors.purple,alignItems:"center",justifyContent:"center",marginBottom:10,alignSelf:"center"}}>
-            <View style={{width:80,height:80,borderRadius:40,alignSelf:"center",borderWidth:1,borderColor:Colors.purple,alignItems:"center",justifyContent:"center",}}>
-              <Text style={{fontFamily:"Poppins_500Medium",fontSize:25,color:Colors.purple}}>B</Text>
-            </View>
-          </View> */}
           <Text style={styles.title}>Sign In</Text>
           <View style={{gap:5}}>
             <Text style={{fontFamily:"Poppins_500Medium"}}>Username</Text>
-            <TextInput style={{backgroundColor:Colors.white,padding:10,elevation:2,borderRadius:10}} cursorColor={Colors.purple} placeholder='Enter Username'/>
+            <TextInput style={{backgroundColor:Colors.white,padding:10,elevation:2,borderRadius:10}} cursorColor={Colors.purple} placeholder='Enter Username' onChangeText={setUsername}/>
             <Text style={{fontFamily:"Poppins_500Medium",marginTop:10}}>password</Text>
             <View style={styles.passwordContainer}>
               <TextInput style={{width:"80%"}} cursorColor={Colors.purple} placeholder='Enter Password'  onChangeText={setPassword} secureTextEntry={showPassword ?false:true}/>
@@ -50,6 +68,7 @@ const LoginScreen = ({navigation}) => {
           <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
+          <Toast position='bottom' bottomOffset={20} config={toastConfig} />
         </View>
       </ScrollView>
     </SafeAreaView>

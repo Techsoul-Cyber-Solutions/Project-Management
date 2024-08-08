@@ -83,8 +83,8 @@ const ProjectDetails = ({route,navigation}) => {
                 <View style={{width:"80%",flexDirection:"row",gap:10}}>
                   <AntDesign name={item.percentage === '100' ? "checkcircle": "checkcircleo"} size={24} color={Colors.success} />
                   <View>
-                  <Text  style={{fontFamily:"Poppins_500Medium"}}>{item.taskTitle}</Text>
-                  <Text style={{fontFamily:"Poppins_400Regular",fontSize:11,color:getStatusColor(item.status)}}>{item.status}</Text>
+                   <Text  style={{fontFamily:"Poppins_500Medium"}}>{item.taskTitle}</Text>
+                   <Text style={{fontFamily:"Poppins_400Regular",fontSize:11,color:getStatusColor(item.status)}}>{item.status}</Text>
                   </View>
                 </View>
                 <View style={{width:"20%",alignItems:"flex-end"}}>

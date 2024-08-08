@@ -7,6 +7,8 @@ import Colors from '../Constants/Colors'
 import * as ImagePicker from 'expo-image-picker'
 import * as DocumentPicker from 'expo-document-picker'
 import AntDesign from '@expo/vector-icons/AntDesign';
+import Toast from 'react-native-toast-message';
+import toastConfig from '../Constants/toastConfig';
 const{width,height} = Dimensions.get("screen");
 
 const AddWork = ({navigation}) => {
@@ -61,6 +63,14 @@ const AddWork = ({navigation}) => {
 //     setModalVisible(false)
 //   }
   const handleSubmit = () => {
+    if(taskDescription === '' || status === '' || startTime === '' || endTime === '' || fileName === ''){
+      Toast.show({
+        type: 'error',
+        text1: 'Missing Fields',
+        text2: 'Please enter the maximum mark before entering marks.'
+      });
+      return
+    }
     const newTask = {
       taskDescription,
       status,
@@ -137,8 +147,6 @@ const AddWork = ({navigation}) => {
                       }}>
                       <Picker.Item label="Select Task" value="Select Task" style={{ fontSize: 13 }} />
                       <Picker.Item label="Frontend Designing" value="Frontend Designing" style={{ fontSize: 13 }} />
-                      {/* <Picker.Item label="In Progress" value="InProgress" style={{ fontSize: 13 }} />
-                      <Picker.Item label="Completed" value="Completed" style={{ fontSize: 13 }} /> */}
                     </Picker>
                   </View>
                   <Text style={styles.modalText}>Work Description : </Text>
@@ -147,6 +155,8 @@ const AddWork = ({navigation}) => {
                     placeholderTextColor={Colors.gray}
                     value={taskDescription}
                     onChangeText={setTaskDescription}
+                    cursorColor={Colors.purple}
+                    
                   />
                   <Text style={styles.modalText}>Status : </Text>
                   <View style={styles.pickerContainer}>
@@ -210,6 +220,8 @@ const AddWork = ({navigation}) => {
                   </TouchableOpacity>
                 </View>
               </ScrollView>
+              <Toast position='bottom' bottomOffset={20} config={toastConfig} />
+
             </Pressable>
           </Modal>
           <Modal
@@ -231,6 +243,7 @@ const AddWork = ({navigation}) => {
               </View>
             </Pressable>
           </Modal>
+          
         </View>
       </ScrollView>
       <TouchableOpacity style={{ backgroundColor: Colors.purple, padding: 10, alignItems: "center", justifyContent: "center", margin: 20, marginLeft: 30, marginRight: 30, borderRadius: 5, flexDirection: "row", gap: 5 }} onPress={() => setCompleteModal(true)}>
@@ -268,7 +281,8 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 16,
     backgroundColor: Colors.white,
-    justifyContent:"flex-start"
+    // justifyContent:"flex-start",
+    // alignItems:"flex-start"
   },
   pickerContainer: {
     borderColor: Colors.grey,

@@ -79,7 +79,8 @@ const Project = ({navigation}) => {
               <Text style={[styles.filterText, filter === 'Completed' && styles.activeText]}>Completed</Text>
             </TouchableOpacity>
           </View>
-         <FlatList
+          <Text>Projects</Text>
+          <FlatList
             data={filteredData}
             keyExtractor={(item, index) => index.toString()}
             showsVerticalScrollIndicator={false}
@@ -89,7 +90,7 @@ const Project = ({navigation}) => {
                   <View style={{ paddingLeft: 10 ,}}>
                     <Text style={styles.taskTitle}>{item.title}</Text>
                     <Text style={styles.projectTitle}>{item.customerName}</Text>
-                      <Text style={{fontSize:12,fontFamily:"Poppins_500Medium",color:item.status === 'Completed'?Colors.success:Colors.purple}}>{item.status}</Text>
+                    <Text style={{fontSize:12,fontFamily:"Poppins_500Medium",color:item.status === 'Completed'?Colors.success:Colors.purple}}>{item.status}</Text>
                     <OverlappingImages images={item.teamMembers.map(member => member.image)} />
                   </View>
                 </View>

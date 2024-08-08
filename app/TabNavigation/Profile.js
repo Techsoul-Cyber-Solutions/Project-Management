@@ -14,6 +14,7 @@ const Profile = ({navigation}) => {
   const [newPwd,setNewPwd] = useState('');
   const [showConfirmPassword,setShowConfirmPassword] = useState(false);
   const [isLoading,setLoading] = useState(false);
+  const [logoutModal,setLogoutModal] = useState(false);
 
  
   return (
@@ -27,9 +28,9 @@ const Profile = ({navigation}) => {
               <Text style={{fontFamily:"Poppins_400Regular",fontSize:12}}>Completed Task</Text>
             </View>
             <View style={{width:"50%",alignItems:"center",justifyContent:"center"}}>
-               <Image style={{width:100,height:100,borderRadius:75}} source={require('../../assets/Images/emp2.jpg')}/>
-               <Text style={{fontFamily:"Poppins_400Regular",fontSize:12}}>Haseeb</Text>
-               <Text style={{fontFamily:"Poppins_400Regular",fontSize:12}}>Web Developer</Text>
+              <Image style={{width:100,height:100,borderRadius:75}} source={require('../../assets/Images/emp2.jpg')}/>
+              <Text style={{fontFamily:"Poppins_500Medium",fontSize:12}}>Haseeb</Text>
+              <Text style={{fontFamily:"Poppins_400Regular",fontSize:12}}>Web Developer</Text>
             </View>
             <View style={{width:"25%",alignItems:"center",justifyContent:"flex-end"}}>
               <Text style={{color:Colors.purple,fontFamily:"Poppins_600SemiBold",fontSize:15}}>3</Text>
@@ -37,33 +38,42 @@ const Profile = ({navigation}) => {
             </View>
           </View>
           <View style={{marginTop:10,padding:15}}>
-           <TouchableOpacity style={{flexDirection:"row",padding:10,backgroundColor:Colors.white,borderRadius:10,alignItems:"center",justifyContent:"space-between",marginBottom:10}} onPress={() => setChangePwdModal(!changePwdModal)}>
-              <View style={{flexDirection:"row",alignItems:"center"}}>
-                <View style={{backgroundColor:"#E6E6FA",borderRadius:30,width:40,height:40,alignItems:"center",justifyContent:"center",}}>
+            <TouchableOpacity style={styles.itemContainer} onPress={() => setChangePwdModal(!changePwdModal)}>
+              <View style={styles.itemSubContainer}>
+                <View style={styles.itemImageContainer}>
                   <MaterialCommunityIcons name="folder-key-outline" size={24} color={Colors.purple} />
                 </View>
                 <Text style={{fontFamily:"Poppins_500Medium",paddingLeft:15}}>Reset Password</Text>
               </View>
               <MaterialIcons name="keyboard-arrow-right" size={24} color={Colors.grey} />
-           </TouchableOpacity>
-           <TouchableOpacity style={{flexDirection:"row",padding:10,backgroundColor:Colors.white,borderRadius:10,alignItems:"center",justifyContent:"space-between",marginBottom:10}}>
-              <View style={{flexDirection:"row",alignItems:"center"}}>
-                <View style={{backgroundColor:"#E6E6FA",borderRadius:30,width:40,height:40,alignItems:"center",justifyContent:"center",}}>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.itemContainer}>
+              <View style={styles.itemSubContainer}>
+                <View style={styles.itemImageContainer}>
                   <MaterialCommunityIcons name="file-document-outline" size={24} color={Colors.purple} />
                 </View>
                 <Text style={{fontFamily:"Poppins_500Medium",paddingLeft:15}}>Terms and Conditions</Text>
               </View>
               <MaterialIcons name="keyboard-arrow-right" size={24} color={Colors.grey} />
-           </TouchableOpacity>
-           <TouchableOpacity style={{flexDirection:"row",padding:10,backgroundColor:Colors.white,borderRadius:10,alignItems:"center",justifyContent:"space-between",}}>
-              <View style={{flexDirection:"row",alignItems:"center"}}>
-                <View style={{backgroundColor:"#E6E6FA",borderRadius:30,width:40,height:40,alignItems:"center",justifyContent:"center",}}>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.itemContainer}>
+              <View style={styles.itemSubContainer}>
+                <View style={styles.itemImageContainer}>
                   <MaterialCommunityIcons name="shield-account-outline" size={24} color={Colors.purple} />
                 </View>
                 <Text style={{fontFamily:"Poppins_500Medium",paddingLeft:15}}>Privacy Policy</Text>
               </View>
               <MaterialIcons name="keyboard-arrow-right" size={24} color={Colors.grey} />
-           </TouchableOpacity>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.itemContainer} onPress={() => setLogoutModal(true)}>
+              <View style={styles.itemSubContainer}>
+                <View style={styles.itemImageContainer}>
+                  <MaterialCommunityIcons name="logout-variant" size={24} color={Colors.purple} />
+                </View>
+                <Text style={{fontFamily:"Poppins_500Medium",paddingLeft:15}}>Log Out</Text>
+              </View>
+              <MaterialIcons name="keyboard-arrow-right" size={24} color={Colors.grey} />
+            </TouchableOpacity>
           </View>
           <Modal
             animationType="slide"
@@ -95,6 +105,25 @@ const Profile = ({navigation}) => {
                     <Text style={styles.buttonText}>Submit</Text>
                   )}
                 </TouchableOpacity>
+              </View>
+            </Pressable>
+          </Modal>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={logoutModal}>
+            <Pressable style={styles.centeredView} >
+              <View style={[styles.modalView,{width:"95%"}]}>
+                <Text style={{ fontFamily: "Poppins_600SemiBold",color:Colors.purple,marginBottom:10}}>Logout</Text>
+                <Text style={{fontFamily:"Poppins_500Medium",marginBottom:20,color:Colors.grey}}>Are you sure want to log out?</Text>
+                <View style={{flexDirection:"row",justifyContent:"space-between",width:"100%"}}>
+                  <TouchableOpacity style={{padding:10,backgroundColor:Colors.purple,borderWidth:1,borderColor:Colors.purple,borderRadius:10,width:"45%",alignItems:"center",justifyContent:"center"}} onPress={() => setLogoutModal(false)} >
+                    <Text style={{ fontFamily: "Poppins_600SemiBold", color: Colors.white }}>Cancel</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={{padding:10,backgroundColor:Colors.white,borderWidth:1,borderColor:Colors.purple,borderRadius:10,width:"45%",alignItems:"center",justifyContent:"center"}}>
+                    <Text style={{fontFamily: "Poppins_600SemiBold", color: Colors.purple}}>Submit</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </Pressable>
           </Modal>
@@ -153,5 +182,26 @@ const styles = StyleSheet.create({
   buttonText:{
     fontFamily:"Poppins_600SemiBold",
     color:Colors.white
+  },
+  itemContainer:{
+    flexDirection:"row",
+    padding:10,
+    backgroundColor:Colors.white,
+    borderRadius:10,
+    alignItems:"center",
+    justifyContent:"space-between",
+    marginBottom:10
+  },
+  itemSubContainer:{
+    flexDirection:"row",
+    alignItems:"center"
+  },
+  itemImageContainer:{
+    backgroundColor:"#E6E6FA",
+    borderRadius:30,
+    width:40,
+    height:40,
+    alignItems:"center",
+    justifyContent:"center",
   }
 })
