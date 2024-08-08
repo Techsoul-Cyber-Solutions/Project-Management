@@ -38,7 +38,7 @@ const TaskScreen = ({navigation}) => {
       <StatusBar backgroundColor={Colors.white} barStyle='dark-content' />
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={{ flex: 1, padding: 15 }}>
-        <View style={styles.searchContainer}>
+          <View style={styles.searchContainer}>
             <AntDesign name="search1" size={20} color={Colors.grey} />
             <TextInput
               style={styles.input}
@@ -80,7 +80,7 @@ const TaskScreen = ({navigation}) => {
                   </View>
                 </View>
                 <View style={{width:"20%",alignItems:"flex-end",}}>
-                  <Text style={{textTransform:"uppercase",fontFamily:"Poppins_500Medium",fontSize:10,color:getPriorityColor(item.priority)}}>{item.priority}</Text>
+                  <Text style={[styles.priority,{color:getPriorityColor(item.priority)}]}>{item.priority}</Text>
                 </View>
               </TouchableOpacity>
             )}
@@ -96,15 +96,12 @@ export default TaskScreen
 const styles = StyleSheet.create({
   filterContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 20,
+    justifyContent: 'space-between',
+    marginBottom: 15,
   },
   filterButton: {
     padding: 10,
     borderRadius: 20,
-    paddingLeft:20,
-    paddingRight:20,
-    // backgroundColor: Colors.white,
   },
   activeFilter: {
     backgroundColor: Colors.white,
@@ -159,7 +156,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginLeft:10,
     marginRight:10,
-    marginBottom:15,
+    marginBottom:10,
     backgroundColor:Colors.white,
     elevation:2
   },
@@ -167,4 +164,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft:10
   },
+  priority:{
+    textTransform:"uppercase",
+    fontFamily:"Poppins_500Medium",
+    fontSize:10,
+  }
 })

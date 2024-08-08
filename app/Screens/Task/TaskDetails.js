@@ -65,10 +65,10 @@ const TaskDetails = ({route,navigation}) => {
 
            </View>
        </ScrollView>
-       <TouchableOpacity style={{backgroundColor:Colors.purple,padding:10,alignItems:"center",justifyContent:"center",margin:20,marginLeft:30,marginRight:30,borderRadius:5,flexDirection:"row",gap:5}}>
+       {/* <TouchableOpacity style={{backgroundColor:Colors.purple,padding:10,alignItems:"center",justifyContent:"center",margin:20,marginLeft:30,marginRight:30,borderRadius:5,flexDirection:"row",gap:5}} onPress={() => navigation.navigate("AddTask")}>
          <AntDesign name="plus" size={19} color={Colors.white} />
          <Text style={{fontFamily:"Poppins_600SemiBold",color:Colors.white}}>Add Activity</Text>
-       </TouchableOpacity>
+       </TouchableOpacity> */}
     </SafeAreaView>
   )
 }

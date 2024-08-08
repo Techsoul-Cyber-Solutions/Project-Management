@@ -5,6 +5,7 @@ import Colors from '../Constants/Colors';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Ionicons } from '@expo/vector-icons';
+
 const {width,height} = Dimensions.get("screen");
 
 const Profile = ({navigation}) => {
@@ -14,6 +15,7 @@ const Profile = ({navigation}) => {
   const [showConfirmPassword,setShowConfirmPassword] = useState(false);
   const [isLoading,setLoading] = useState(false);
 
+ 
   return (
     <SafeAreaView style={{flex:1,}}>
       <StatusBar backgroundColor={Colors.white} barStyle='dark-content' />

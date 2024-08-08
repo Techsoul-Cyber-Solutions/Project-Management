@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View,TouchableOpacity, Dimensions } from 'react-native'
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../TabNavigation/Home';
@@ -8,6 +8,8 @@ import Profile from '../TabNavigation/Profile';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Colors from '../Constants/Colors';
 import { useNavigation } from '@react-navigation/native';
+import AddWork from '../TabNavigation/AddWork';
+const {width,height} = Dimensions.get("screen");
 
 const TabNavigation = createBottomTabNavigator();
 
@@ -22,11 +24,20 @@ const HomeScreen = () => {
     );
   };
   return (
-   <TabNavigation.Navigator >
-     <TabNavigation.Screen name='Home' component={Home} options={{tabBarActiveBackgroundColor:Colors.white,tabBarActiveTintColor:Colors.purple, tabBarInactiveTintColor:Colors.grey,tabBarIcon: (tabInfo) => { return( <AntDesign name="home" size={20} color={tabInfo.focused ? Colors.purple : Colors.tab} /> ) },tabBarLabelStyle: { marginBottom: 3, },tabBarIconStyle:{marginTop:2,},headerShown:false}}/>
-     <TabNavigation.Screen name='Project' component={Project} options={{tabBarActiveBackgroundColor:Colors.white,tabBarActiveTintColor:Colors.purple, tabBarInactiveTintColor:Colors.grey,tabBarIcon: (tabInfo) => { return( <AntDesign name="profile" size={20} color={tabInfo.focused ? Colors.purple : Colors.tab} /> ) },tabBarLabelStyle: { marginBottom: 3, },tabBarIconStyle:{marginTop:2,}, headerLeft: () => <BackButton />,headerTintColor:Colors.white}}/>
-     <TabNavigation.Screen name='Chat' component={Chat} options={{tabBarActiveBackgroundColor:Colors.white,tabBarActiveTintColor:Colors.purple, tabBarInactiveTintColor:Colors.grey,tabBarIcon: (tabInfo) => { return( <AntDesign name="message1" size={20} color={tabInfo.focused ? Colors.purple : Colors.tab} /> ) },tabBarLabelStyle: { marginBottom: 3, },tabBarIconStyle:{marginTop:2,}}}/>
-     <TabNavigation.Screen name='Profile' component={Profile} options={{tabBarActiveBackgroundColor:Colors.white,tabBarActiveTintColor:Colors.purple, tabBarInactiveTintColor:Colors.grey,tabBarIcon: (tabInfo) => { return( <AntDesign name="user" size={20} color={tabInfo.focused ? Colors.purple : Colors.tab} /> ) },tabBarLabelStyle: { marginBottom: 3, },tabBarIconStyle:{marginTop:2,}, headerLeft: () => <BackButton />,headerTintColor:Colors.white}}/>
+   <TabNavigation.Navigator screenOptions={{ tabBarShowLabel:false,}}>
+     <TabNavigation.Screen name='Home' component={Home} options={{tabBarActiveBackgroundColor:Colors.white,tabBarActiveTintColor:Colors.purple, tabBarInactiveTintColor:Colors.grey,tabBarIcon: (tabInfo) => { return( <AntDesign name="home" size={20} color={tabInfo.focused ? Colors.purple : Colors.tab} /> ) },tabBarLabelStyle: { marginBottom: 3, },tabBarIconStyle:{marginTop:2,},headerShown:false,tabBarShowLabel:false}}/>
+     <TabNavigation.Screen name='Project' component={Project} options={{tabBarActiveBackgroundColor:Colors.white,tabBarActiveTintColor:Colors.purple, tabBarInactiveTintColor:Colors.grey,tabBarIcon: (tabInfo) => { return( <AntDesign name="profile" size={20} color={tabInfo.focused ? Colors.purple : Colors.tab} /> ) },tabBarLabelStyle: { marginBottom: 3, },tabBarIconStyle:{marginTop:2,}, headerLeft: () => <BackButton />,headerTintColor:Colors.white,tabBarShowLabel:false}}/>
+     <TabNavigation.Screen name='Add Work' component={AddWork} 
+       options={{
+        tabBarIcon:({focused}) =>(
+          <View style={{ backgroundColor:Colors.purple,elevation:2,width:55,borderRadius:30,height:55,alignItems:"center",justifyContent:"center",bottom:15}}>
+            <AntDesign name="plus" size={20} color={Colors.white} style={{alignSelf:"center", }}  />
+          </View>
+        ),tabBarShowLabel:false,headerLeft: () => <BackButton />,headerTintColor:Colors.white
+        // tabBarActiveBackgroundColor:Colors.white,tabBarActiveTintColor:Colors.purple, tabBarInactiveTintColor:Colors.grey,tabBarIcon: (tabInfo) => { return( <AntDesign name="plus" size={20} color={tabInfo.focused ? Colors.purple : Colors.tab} /> ) },tabBarLabelStyle: { marginBottom: 3, },tabBarIconStyle:{marginTop:2,}, headerLeft: () => <BackButton />,headerTintColor:Colors.white
+      }}/>
+     <TabNavigation.Screen name='Chat' component={Chat} options={{tabBarActiveBackgroundColor:Colors.white,tabBarActiveTintColor:Colors.purple, tabBarInactiveTintColor:Colors.grey,tabBarIcon: (tabInfo) => { return( <AntDesign name="message1" size={20} color={tabInfo.focused ? Colors.purple : Colors.tab} /> ) },tabBarLabelStyle: { marginBottom: 3, },tabBarIconStyle:{marginTop:2,},tabBarShowLabel:false}}/>
+     <TabNavigation.Screen name='Profile' component={Profile} options={{tabBarActiveBackgroundColor:Colors.white,tabBarActiveTintColor:Colors.purple, tabBarInactiveTintColor:Colors.grey,tabBarIcon: (tabInfo) => { return( <AntDesign name="user" size={20} color={tabInfo.focused ? Colors.purple : Colors.tab} /> ) },tabBarLabelStyle: { marginBottom: 3, },tabBarIconStyle:{marginTop:2,}, headerLeft: () => <BackButton />,headerTintColor:Colors.white,tabBarShowLabel:false}}/>
     </TabNavigation.Navigator>
   )
 }

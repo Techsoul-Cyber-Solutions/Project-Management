@@ -5,10 +5,11 @@ import RootNavigation from './app/Navigation/RootNavigation';
 export default function App() {
   return (
     <View style={styles.container}>
-    <RootNavigation/>
+      <RootNavigation/>
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
