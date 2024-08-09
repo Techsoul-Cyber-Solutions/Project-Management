@@ -46,7 +46,7 @@ const LoginScreen = ({navigation}) => {
       });
       return
     }
-    navigation.navigate("HomeScreen")
+    navigation.navigate("HomeScreen");
   }
   return (
     <SafeAreaView style={{flex:1,backgroundColor:Colors.white}}>

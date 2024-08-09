@@ -79,7 +79,7 @@ const Project = ({navigation}) => {
               <Text style={[styles.filterText, filter === 'Completed' && styles.activeText]}>Completed</Text>
             </TouchableOpacity>
           </View>
-          <Text>Projects</Text>
+          <Text style={[styles.taskTitle,{textTransform:"capitalize"}]}>Projects</Text>
           <FlatList
             data={filteredData}
             keyExtractor={(item, index) => index.toString()}
@@ -110,7 +110,6 @@ const styles = StyleSheet.create({
   filterContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 20,
   },
   filterButton: {
     padding: 10,
@@ -156,7 +155,7 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   taskTitle: {
-    fontSize: 18,
+    // fontSize: 18,
     fontFamily: "Poppins_600SemiBold",
     textTransform: "uppercase",
   },
