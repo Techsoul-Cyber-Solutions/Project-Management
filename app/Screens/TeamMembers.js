@@ -4,13 +4,13 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import Colors from '../Constants/Colors'
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-const TeamMembers = () => {
+const TeamMembers = ({navigation}) => {
     const [searchText, setSearchText] = useState('');
     const [filter, setFilter] = useState('Active');
 
     const taskData = [
-      { id: 1, memberName: "Haseeb", projectTitle: "Web Developer", priority: "Immediate", percentage: "80" ,image:require("../../assets/Images/emp3.jpg"),status:"Active"},
-      { id: 2, memberName: "Aslam", projectTitle: "Web Developer", priority: "Gradual", percentage: "100" ,image:require("../../assets/Images/emp2.jpg"),status:"Active"},
+      { id: 1, memberName: "Haseeb",position: "Web Developer", priority: "Immediate", percentage: "80" ,image:require("../../assets/Images/emp3.jpg"),status:"Active"},
+      { id: 2, memberName: "Aslam", position: "Web Developer", priority: "Gradual", percentage: "100" ,image:require("../../assets/Images/emp2.jpg"),status:"Active"},
     ];
   
     const filteredData = taskData.filter(task => {
@@ -38,7 +38,7 @@ const TeamMembers = () => {
       <StatusBar backgroundColor={Colors.white} barStyle='dark-content' />
       <ScrollView contentContainerStyle={{flexGrow:1}}>
         <View style={{flex:1,}}>
-        <View style={styles.searchContainer}>
+          <View style={styles.searchContainer}>
             <AntDesign name="search1" size={20} color={Colors.grey} />
             <TextInput
               style={styles.input}
@@ -66,14 +66,15 @@ const TeamMembers = () => {
             keyExtractor={(item, index) => index.toString()}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
-              <TouchableOpacity style={styles.taskContainer} >
+              <TouchableOpacity style={styles.taskContainer} onPress={() => navigation.navigate("MemberDetails",{item})}>
                 <View style={{flexDirection:"row",width:"80%"}}>
                   <View style={styles.projectIcon}>
                     <Image source={item.image} style={{width:"100%",height:"100%",borderRadius:30}}/>
                   </View>
                   <View style={{ paddingLeft: 10 }}>
                     <Text style={styles.memberName}>{item.memberName}</Text>
-                    <Text style={styles.projectTitle}>{item.projectTitle}</Text>
+                    <Text style={styles.projectTitle}>{item.position}</Text>
+                    
                   </View>
                 </View>
                 <View style={{width:"20%",alignItems:"flex-end",}}>

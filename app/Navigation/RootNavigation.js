@@ -13,6 +13,7 @@ import Notification from '../Screens/Notification';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TeamMembers from '../Screens/TeamMembers';
 import Clients from '../Screens/Clients';
+import MemberDetails from '../Screens/Task/MemberDetails';
 
 const Stack = createNativeStackNavigator();
 const RootNavigation = () => {
@@ -50,7 +51,7 @@ const RootNavigation = () => {
     }
   return (
     <NavigationContainer>
-      <Stack.Navigator   initialRouteName={userType === null ? "LoginScreen" : "HomeScreen"}>
+      <Stack.Navigator  initialRouteName={userType === null ? "LoginScreen" : "HomeScreen"}>
         <Stack.Screen name='LoginScreen' component={LoginScreen} options={{headerShown:false}}/>
         <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown:false}}/>
         <Stack.Screen name='TaskScreen' component={TaskScreen} options={{headerTitle:"",headerStyle: {backgroundColor: Colors.primary,},headerBackTitle:"Back",headerTintColor:Colors.purple,headerTitleStyle:{fontFamily:"Poppins_600SemiBold"}}}/>
@@ -60,6 +61,7 @@ const RootNavigation = () => {
         <Stack.Screen name='Notification' component={Notification} options={{headerTitle:"",headerStyle: {backgroundColor: Colors.primary,},headerBackTitle:"Back",headerTintColor:Colors.purple,headerTitleStyle:{fontFamily:"Poppins_600SemiBold"}}}/>
         <Stack.Screen name='TeamMembers' component={TeamMembers} options={{headerTitle:"",headerStyle: {backgroundColor: Colors.primary,},headerBackTitle:"Back",headerTintColor:Colors.purple,headerTitleStyle:{fontFamily:"Poppins_600SemiBold"}}}/>
         <Stack.Screen name='Clients' component={Clients} options={{headerTitle:"",headerStyle: {backgroundColor: Colors.primary,},headerBackTitle:"Back",headerTintColor:Colors.purple,headerTitleStyle:{fontFamily:"Poppins_600SemiBold"}}}/>
+        <Stack.Screen name='MemberDetails' component={MemberDetails} options={{headerTitle:"",headerStyle: {backgroundColor: Colors.primary,},headerBackTitle:"Back",headerTintColor:Colors.purple,headerTitleStyle:{fontFamily:"Poppins_600SemiBold"}}}/>
       </Stack.Navigator>
     </NavigationContainer>
   )
