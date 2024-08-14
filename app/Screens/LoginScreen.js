@@ -6,6 +6,7 @@ import {  useFonts,Poppins_400Regular,Poppins_500Medium,Poppins_600SemiBold,Popp
 import { Ionicons } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
 import toastConfig from '../Constants/toastConfig';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const {width,height} = Dimensions.get("screen");
 
 const LoginScreen = ({navigation}) => {
@@ -36,18 +37,45 @@ const LoginScreen = ({navigation}) => {
       </View>
     )
   }
-  const handleLogin = () =>{
-    console.log(username,password);
+  const handleLogin = async () =>{
+    // console.log(username,password);
     if(username=== '' || password === ''){
       Toast.show({
         type: 'error',
         text1: 'Missing Fields',
         text2: 'Please fill the required fields.'
       });
-      return
+      return;
     }
-    navigation.navigate("HomeScreen");
-  }
+    try{
+     if(username === 'emp' && password === 'password'){
+      await AsyncStorage.setItem('username',username);
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Logged In Successfully.'
+      });
+      console.log(username,"emp");
+      navigation.navigate("HomeScreen",{username:username});
+    } else if (username === 'admin' && password === 'password'){
+      await AsyncStorage.setItem('username',username);
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Logged In Successfully.'
+      });
+      console.log(username,"admin");
+      navigation.navigate("HomeScreen",{username});
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Invalid Data',
+        text2: 'Please enter Correct Data.'
+      });
+    }
+  } catch(error){
+    console.log("Error storing username",error);
+  }}
   return (
     <SafeAreaView style={{flex:1,backgroundColor:Colors.white}}>
       <StatusBar backgroundColor={Colors.white} barStyle='dark-content' />

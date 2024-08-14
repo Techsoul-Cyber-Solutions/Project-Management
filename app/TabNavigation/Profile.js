@@ -5,6 +5,7 @@ import Colors from '../Constants/Colors';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const {width,height} = Dimensions.get("screen");
 
@@ -16,6 +17,13 @@ const Profile = ({navigation}) => {
   const [isLoading,setLoading] = useState(false);
   const [logoutModal,setLogoutModal] = useState(false);
 
+  const handleLogout = async () => {
+    await AsyncStorage.clear();
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "LoginScreen" }],
+    });
+  };
  
   return (
     <SafeAreaView style={{flex:1,}}>
@@ -120,7 +128,7 @@ const Profile = ({navigation}) => {
                   <TouchableOpacity style={{padding:10,backgroundColor:Colors.purple,borderWidth:1,borderColor:Colors.purple,borderRadius:10,width:"45%",alignItems:"center",justifyContent:"center"}} onPress={() => setLogoutModal(false)} >
                     <Text style={{ fontFamily: "Poppins_600SemiBold", color: Colors.white }}>Cancel</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={{padding:10,backgroundColor:Colors.white,borderWidth:1,borderColor:Colors.purple,borderRadius:10,width:"45%",alignItems:"center",justifyContent:"center"}} onPress={() => navigation.navigate("LoginScreen")}>
+                  <TouchableOpacity style={{padding:10,backgroundColor:Colors.white,borderWidth:1,borderColor:Colors.purple,borderRadius:10,width:"45%",alignItems:"center",justifyContent:"center"}} onPress={handleLogout}>
                     <Text style={{fontFamily: "Poppins_600SemiBold", color: Colors.purple}}>Logout</Text>
                   </TouchableOpacity>
                 </View>
