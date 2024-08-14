@@ -1,15 +1,17 @@
 import { StyleSheet, Text, View,StatusBar,ScrollView,TouchableOpacity,FlatList, Dimensions,TextInput } from 'react-native'
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Colors from '../Constants/Colors'
 import OverlappingImages from '../Constants/OverlappingImages ';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const {width,height} = Dimensions.get("screen");
 
 const Project = ({navigation}) => {
   const [filter, setFilter] = useState('All');
   const [searchText, setSearchText] = useState('');
+  const [userRole,setUserRole] = useState('');
 
   const projectData = [
     {id:1,title:"Leap", customerName:"NSS School" ,status:"InProgress",priority:"Immediate",percentage:"80",category:"Mobile Application",teamMembers: [
@@ -48,6 +50,17 @@ const Project = ({navigation}) => {
   const clearSearch = () => {
     setSearchText('');
   };
+  const retrieveData = async () =>{
+    const username = await AsyncStorage.getItem('username');
+    console.log(username,"username in project");
+    setUserRole(username);
+   }
+   useEffect(() => {
+     retrieveData();
+   },[]);
+   useEffect(() =>{
+     console.log(userRole,"userRole in project");
+   },[userRole]);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backGround }}>
       <StatusBar backgroundColor={Colors.white} barStyle='dark-content' />
@@ -100,6 +113,11 @@ const Project = ({navigation}) => {
           />
         </View>
       </ScrollView>
+      {userRole === 'admin' ? (
+         <TouchableOpacity style={{ backgroundColor: Colors.purple, padding: 10, alignItems: "center", justifyContent: "center", margin: 20, marginLeft: 30, marginRight: 30, borderRadius: 5, flexDirection: "row", gap: 5 }}>
+         <Text style={{ fontFamily: "Poppins_600SemiBold", color: Colors.white }}>Add Project</Text>
+       </TouchableOpacity>
+      ):null}
     </SafeAreaView>
   )
 }

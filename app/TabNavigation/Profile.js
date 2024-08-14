@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View,StatusBar,ScrollView, Image, TouchableOpacity,Modal,Pressable,TextInput,ActivityIndicator, Dimensions } from 'react-native'
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Colors from '../Constants/Colors';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
@@ -16,6 +16,7 @@ const Profile = ({navigation}) => {
   const [showConfirmPassword,setShowConfirmPassword] = useState(false);
   const [isLoading,setLoading] = useState(false);
   const [logoutModal,setLogoutModal] = useState(false);
+  const [userRole,setUserRole] = useState('');
 
   const handleLogout = async () => {
     await AsyncStorage.clear();
@@ -24,7 +25,17 @@ const Profile = ({navigation}) => {
       routes: [{ name: "LoginScreen" }],
     });
   };
- 
+  const retrieveData = async () =>{
+   const username = await AsyncStorage.getItem('username');
+   console.log(username,"username in profile");
+   setUserRole(username);
+  }
+  useEffect(() => {
+    retrieveData();
+  },[]);
+  useEffect(() =>{
+    console.log(userRole,"userRole in Profile");
+  },[userRole]);
   return (
     <SafeAreaView style={{flex:1,}}>
       <StatusBar backgroundColor={Colors.white} barStyle='dark-content' />
@@ -38,7 +49,7 @@ const Profile = ({navigation}) => {
             <View style={{width:"50%",alignItems:"center",justifyContent:"center"}}>
               <Image style={{width:100,height:100,borderRadius:75}} source={require('../../assets/Images/emp2.jpg')}/>
               <Text style={{fontFamily:"Poppins_500Medium",fontSize:12}}>Haseeb</Text>
-              <Text style={{fontFamily:"Poppins_400Regular",fontSize:12}}>Web Developer</Text>
+              <Text style={{fontFamily:"Poppins_400Regular",fontSize:12}}>{userRole === 'admin' ? 'Admin ':'Web Developer'}</Text>
             </View>
             <View style={{width:"25%",alignItems:"center",justifyContent:"flex-end"}}>
               <Text style={{color:Colors.purple,fontFamily:"Poppins_600SemiBold",fontSize:15}}>3</Text>
@@ -46,6 +57,15 @@ const Profile = ({navigation}) => {
             </View>
           </View>
           <View style={{marginTop:10,padding:15}}>
+           <TouchableOpacity style={styles.itemContainer} >
+              <View style={styles.itemSubContainer}>
+                <View style={styles.itemImageContainer}>
+                  <MaterialCommunityIcons name="account-edit-outline" size={24} color={Colors.purple} />
+                </View>
+                <Text style={{fontFamily:"Poppins_500Medium",paddingLeft:15}}>Edit Profile</Text>
+              </View>
+              <MaterialIcons name="keyboard-arrow-right" size={24} color={Colors.grey} />
+            </TouchableOpacity>
             <TouchableOpacity style={styles.itemContainer} onPress={() => setChangePwdModal(!changePwdModal)}>
               <View style={styles.itemSubContainer}>
                 <View style={styles.itemImageContainer}>
