@@ -3,6 +3,7 @@ import React,{useState} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Colors from '../Constants/Colors'
 import AntDesign from '@expo/vector-icons/AntDesign';
+import NetInfo from '@react-native-community/netinfo';
 
 const TeamMembers = ({navigation}) => {
     const [searchText, setSearchText] = useState('');

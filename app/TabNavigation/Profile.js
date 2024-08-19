@@ -145,14 +145,14 @@ const Profile = ({navigation}) => {
             visible={logoutModal}>
             <Pressable style={styles.centeredView} >
               <View style={[styles.modalView,{width:"95%"}]}>
-                <Text style={logoutHeading}>Logout</Text>
+                <Text style={styles.logoutHeading}>Logout</Text>
                 <Text style={{fontFamily:"Poppins_500Medium",marginBottom:20,color:Colors.grey}}>Are you sure want to log out?</Text>
                 <View style={{flexDirection:"row",justifyContent:"space-between",width:"100%"}}>
                   <TouchableOpacity style={styles.cancelButton} onPress={() => setLogoutModal(false)} >
-                    <Text style={cancelText}>Cancel</Text>
+                    <Text style={styles.cancelText}>Cancel</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-                    <Text style={logoutText}>Logout</Text>
+                    <Text style={styles.logoutText}>Logout</Text>
                   </TouchableOpacity>
                 </View>
               </View>

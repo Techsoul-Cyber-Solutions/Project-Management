@@ -78,7 +78,7 @@ const ProjectDetails = ({route,navigation}) => {
               keyExtractor={(item,index) => index.toString()}
               showsVerticalScrollIndicator= {false}
               renderItem={({item}) => (
-              <Pressable style={{backgroundColor:Colors.white,flexDirection:"row",marginBottom:10,padding:10,}}>
+              <Pressable style={styles.taskContainer}>
                 <View style={{width:"80%",flexDirection:"row",gap:10}}>
                   <AntDesign name={item.percentage === '100' ? "checkcircle": "checkcircleo"} size={24} color={Colors.success} />
                   <View>
@@ -100,7 +100,7 @@ const ProjectDetails = ({route,navigation}) => {
               keyExtractor={(item,index) => index.toString()}
               showsVerticalScrollIndicator= {false}
               renderItem={({item}) => (
-              <Pressable style={{backgroundColor:Colors.white,flexDirection:"row",marginBottom:10,padding:10,alignItems:"center"}} onPress={() => navigation.navigate("MemberDetails",{item})}>
+              <Pressable style={styles.memberConatainer} onPress={() => navigation.navigate("MemberDetails",{item})}>
                 <View style={{width:"80%",flexDirection:"row",gap:10,alignItems:"center"}}>
                   <Image source={item.image} style={{width:50,height:50,borderRadius:25}}/>
                   <View>
@@ -117,12 +117,11 @@ const ProjectDetails = ({route,navigation}) => {
           </View>
         </View>
       </ScrollView>
-      <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate("AddTask")}>
+      {/* <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate("AddTask")}>
         <AntDesign name="plus" size={19} color={Colors.white} />
         <Text style={{fontFamily:"Poppins_600SemiBold",color:Colors.white}}>Complete</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </SafeAreaView>
-    
   )
 }
 
@@ -201,5 +200,18 @@ const styles = StyleSheet.create({
       justifyContent:"space-between",
       flexDirection:"row",
       marginBottom:10
+    },
+    taskContainer:{
+      backgroundColor:Colors.white,
+      flexDirection:"row",
+      marginBottom:10,
+      padding:10,
+    },
+    memberConatainer:{
+      backgroundColor:Colors.white,
+      flexDirection:"row",
+      marginBottom:10,
+      padding:10,
+      alignItems:"center"
     }
 })

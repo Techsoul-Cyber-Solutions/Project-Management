@@ -291,10 +291,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingLeft:20,
     paddingRight:20,
-    // backgroundColor: Colors.white,
-  },
-  activeFilter: {
-    backgroundColor: Colors.white,
   },
   filterText: {
     color: Colors.grey,
@@ -315,22 +311,7 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 15,
   },
-  projectIcon: {
-    backgroundColor: Colors.purple,
-    width: 50,
-    height: 50,
-    borderRadius: 5,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  projectIconText: {
-    color: Colors.white,
-    fontSize: 18,
-    fontFamily: "Poppins_600SemiBold",
-    textTransform: "uppercase",
-  },
   taskTitle: {
-    // fontSize: 18,
     fontFamily: "Poppins_600SemiBold",
     textTransform: "uppercase",
   },
@@ -428,8 +409,6 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 16,
     backgroundColor: Colors.white,
-    // justifyContent:"flex-start",
-    // alignItems:"flex-start"
   },
   picker: {
     height: 50,

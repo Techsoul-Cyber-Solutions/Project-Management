@@ -1,13 +1,18 @@
 import { SafeAreaView, StyleSheet, Text, View ,StatusBar,ScrollView,Image,TouchableOpacity, Dimensions, FlatList, Pressable} from 'react-native'
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import Colors from '../Constants/Colors';
 const {width,height} = Dimensions.get("screen");
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import NetInfo from '@react-native-community/netinfo';
 
  const notificationData = [{id:1,title:"Urgent work",content:"Complete Leap application within 5 days",time:'15:05 pm'},
   {id:2,title:"Urgent work",content:"Complete Leap application within 5 days",time:'15:05 pm'}
  ]
 const Notification = ({navigation}) => {
+  const [showNetInfo, setNetInfo] = useState(true);
+// useEffect(() => {
+  
+// })
   return (
     <SafeAreaView style={{flex:1,backgroundColor:Colors.backGround}}>
       <StatusBar backgroundColor={Colors.white} barStyle='dark-content' />
@@ -25,7 +30,7 @@ const Notification = ({navigation}) => {
             </>
           ):(
             <>
-            <Text style={{fontFamily:"Poppins_600SemiBold",alignSelf:"flex-start",paddingLeft:15,paddingRight:15,paddingTop:15}}>Notification</Text>
+              <Text style={styles.heading}>Notification</Text>
               <FlatList
                 data={notificationData}
                 keyExtractor={(item,index) =>index.toString()}
@@ -33,7 +38,7 @@ const Notification = ({navigation}) => {
                 style={{width:"100%",}}
                 renderItem={({item}) => (
                   <View style={styles.notificationContainer}>
-                    <Pressable style={{ backgroundColor:"#E1DEED", width: 48, height: 48, borderRadius: 24, alignItems: "center", justifyContent: "center" }}>
+                    <Pressable style={styles.iconContainer}>
                       <MaterialIcons name="notifications-none" size={24} color={Colors.purple} />
                     </Pressable>
                     <View style={styles.textContainer}>
@@ -113,4 +118,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent:"center"
   },
+  heading:{
+    fontFamily:"Poppins_600SemiBold",
+    alignSelf:"flex-start",
+    paddingLeft:15,
+    paddingRight:15,
+    paddingTop:15
+  },
+  iconContainer:{
+    backgroundColor:"#E1DEED",
+     width: 48,
+     height: 48,
+     borderRadius: 24,
+     alignItems: "center",
+     justifyContent: "center"
+  }
 })

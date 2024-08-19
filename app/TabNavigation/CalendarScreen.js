@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import Colors from '../Constants/Colors';
 import moment from 'moment';
+import NetInfo from '@react-native-community/netinfo';
 
 const CalendarScreen = () => {
   const currentDate = moment().format('YYYY-MM-DD');

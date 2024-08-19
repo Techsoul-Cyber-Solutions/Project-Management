@@ -135,8 +135,8 @@ const AddWork = ({navigation}) => {
       <StatusBar backgroundColor={Colors.white} barStyle='dark-content' />
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={{ flex: 1, padding: 15 }}>
-          <TouchableOpacity style={{padding:10,borderWidth:.5,borderColor:Colors.white,flexDirection:"row",alignItems:"center",gap:10,backgroundColor:Colors.white,elevation:2,borderRadius:10}} onPress={handleWork}>
-            <View style={{backgroundColor:Colors.purple,width:45,height:45,borderRadius:25,alignItems:"center",justifyContent:"center"}}>
+          <TouchableOpacity style={styles.subContainer} onPress={handleWork}>
+            <View style={styles.iconContainer}>
               <AntDesign name="plus" size={19} color={Colors.white} />
             </View>
             <View style={{alignItems:"center",justifyContent:"center"}}>
@@ -168,19 +168,6 @@ const AddWork = ({navigation}) => {
                     </TouchableOpacity>
                   </View>
                   <Text style={styles.modalText}>Task Name : </Text>
-                  {/* <View style={styles.pickerContainer}> */}
-                    {/* <Picker
-                      selectedValue={taskName}
-                      style={styles.picker}
-                      onValueChange={(itemValue) => {
-                        if (itemValue !== 'Select Task') {
-                          setTaskName(itemValue);
-                        }
-                      }}>
-                      <Picker.Item label="Select Task" value="Select Task" style={{ fontSize: 13 }} />
-                      <Picker.Item label="Frontend Designing" value="Frontend Designing" style={{ fontSize: 13 }} />
-                      <Picker.Item label='None' value="None" style={{ fontSize:13}}/>
-                    </Picker> */}
                   <TextInput
                     style={[styles.textInput]}
                     placeholderTextColor={Colors.gray}
@@ -188,7 +175,6 @@ const AddWork = ({navigation}) => {
                     onChangeText={setTaskName}
                     cursorColor={Colors.purple}
                   />
-                  {/* </View> */}
                   <Text style={styles.modalText}>Status : </Text>
                   <View style={styles.pickerContainer}>
                     <Picker
@@ -204,7 +190,6 @@ const AddWork = ({navigation}) => {
                     </Picker>
                   </View>
                   <Text style={styles.modalText}>Assign To : </Text>
-                  {/* <View style={[styles.pickerContainer,{backgroundColor:"grey",marginBottom:0,justifyContent:"center"}]}> */}
                   <MultiSelect
                     items={employees}
                     uniqueKey="id"
@@ -223,7 +208,6 @@ const AddWork = ({navigation}) => {
                     submitButtonColor={Colors.purple}
                     submitButtonText="Done"
                     hideTags
-                    //  altFontFamily="ProximaNova-Light"
                     styleItemsContainer={{margin:10,}}
                     styleInputGroup={{padding:10,borderRadius:10}}
                     styleMainWrapper={{justifyContent:"center"}}
@@ -231,12 +215,10 @@ const AddWork = ({navigation}) => {
                     styleSelectorContainer={{}}
                     styleDropdownMenu={{}}
                     styleDropdownMenuSubsection={{borderRadius:10,alignSelf:"center",height:50,borderColor:Colors.grey,borderWidth:.5,padding:10,paddingLeft:15,}}
-                  
                   />
                   <TouchableOpacity style={{ backgroundColor: Colors.purple, padding: 10, alignItems: "center", justifyContent: "center", margin: 20, marginLeft: 30, marginRight: 30, borderRadius: 5, flexDirection: "row", gap: 5 }} onPress={handleSubmit} >
                     <Text style={{ fontFamily: "Poppins_600SemiBold", color: Colors.white }}>Submit</Text>
                   </TouchableOpacity>
-                  {/* </View>   */}
                 </View>
               </ScrollView>
             </Pressable>
@@ -547,4 +529,23 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 16,
   },
+  subContainer:{
+    padding:10,
+    borderWidth:.5,
+    borderColor:Colors.white,
+    flexDirection:"row",
+    alignItems:"center",
+    gap:10,
+    backgroundColor:Colors.white,
+    elevation:2,
+    borderRadius:10
+  },
+  iconContainer:{
+    backgroundColor:Colors.purple,
+    width:45,
+    height:45,
+    borderRadius:25,
+    alignItems:"center",
+    justifyContent:"center"
+  }
 })

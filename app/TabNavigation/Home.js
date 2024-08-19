@@ -6,6 +6,7 @@ import Feather from '@expo/vector-icons/Feather';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Progress from 'react-native-progress';
+import NetInfo from '@react-native-community/netinfo';
 
 import {  useFonts,Poppins_400Regular,Poppins_500Medium,Poppins_600SemiBold,Poppins_700Bold,} from '@expo-google-fonts/poppins';
 const {width,height} = Dimensions.get("screen");
@@ -85,7 +86,7 @@ const Home = ({navigation}) => {
             <View style={{flexDirection:"row",width:"80%"}}>
               <Image source={require('../../assets/Images/profile.jpeg')} style={{width:50,height:50,borderRadius:25}}/>
               <View style={{paddingLeft:10}}>
-                <Text style={{fontFamily:"Poppins_600SemiBold",fontSize:18}}>Welcome Back</Text>
+                <Text style={styles.welcomeText}>Welcome Back</Text>
                 <Text  style={{fontFamily:"Poppins_600SemiBold",}}>Haseebha</Text>
               </View>
             </View>
@@ -213,5 +214,9 @@ const styles = StyleSheet.create({
     marginRight:5,
     backgroundColor:Colors.purple,
     borderRadius:10,padding:15
+  },
+  welcomeText:{
+    fontFamily:"Poppins_600SemiBold",
+    fontSize:18
   }
 })
