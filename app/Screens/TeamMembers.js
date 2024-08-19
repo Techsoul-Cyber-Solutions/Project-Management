@@ -74,7 +74,6 @@ const TeamMembers = ({navigation}) => {
                   <View style={{ paddingLeft: 10 }}>
                     <Text style={styles.memberName}>{item.memberName}</Text>
                     <Text style={styles.projectTitle}>{item.position}</Text>
-                    
                   </View>
                 </View>
                 <View style={{width:"20%",alignItems:"flex-end",}}>

@@ -6,6 +6,7 @@ import OverlappingImages from '../../Constants/OverlappingImages '
 
 const MemberDetails = ({route,navigation}) => {
     const {item} =route.params;
+    console.log(item,"Item");
     const [filter, setFilter] = useState('All');
     const [searchText, setSearchText] = useState('');
 

@@ -132,12 +132,10 @@ const styles = StyleSheet.create({
   },
   projectIconText: {
     color: Colors.white,
-    // fontSize: 18,
     fontFamily: "Poppins_600SemiBold",
     textTransform: "uppercase",
   },
   taskTitle: {
-    // fontSize: 18,
     fontFamily: "Poppins_600SemiBold",
     textTransform: "uppercase",
   },
@@ -151,8 +149,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 10,
     padding: 10,
-    marginLeft:10,
-    marginRight:10,
     marginBottom:10,
     backgroundColor:Colors.white,
     elevation:2

@@ -32,7 +32,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
   return (
     <SafeAreaView styles={{flex:1,}}>
       <StatusBar backgroundColor={Colors.white} barStyle='dark-content' />
-      <ScrollView contentContainerStyle={{flexGrow:1}}>
+      <ScrollView contentContainerStyle={{flexGrow:1}} showsVerticalScrollIndicator={false}>
         <View style={{flex:1,padding:15}}>
           <View style={styles.searchContainer}>
             <AntDesign name="search1" size={20} color={Colors.grey} />

@@ -52,7 +52,7 @@ const CalendarScreen = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backGround }}>
       <StatusBar backgroundColor={Colors.white} barStyle="dark-content" />
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
         <View style={{ flex: 1,padding:15 }}>
           <Calendar
             dayComponent={renderCustomDay}

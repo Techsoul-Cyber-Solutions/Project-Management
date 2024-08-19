@@ -20,7 +20,7 @@ const TaskDetails = ({route,navigation}) => {
    return (
     <SafeAreaView style={{flex:1,backgroundColor:Colors.backGround}}>
        <StatusBar backgroundColor={Colors.white} barStyle='dark-content' />
-       <ScrollView contentContainerStyle={{flexGrow:1}}>
+       <ScrollView contentContainerStyle={{flexGrow:1}} showsVerticalScrollIndicator={false}>
            <View style={{flex:1,padding:15}}>
                <View style={{padding:10,backgroundColor:Colors.white,flexDirection:"row",borderRadius:10,marginBottom:10,elevation:2}}>
                     <View style={{width:"80%",}}>

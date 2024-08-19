@@ -55,7 +55,7 @@ const AddTask = ({navigation}) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar backgroundColor={Colors.white} barStyle='dark-content' />
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
         <View style={{ flex: 1, padding: 15 }}>
           <Text style={styles.title}>Add New Task</Text>
           <Text style={{ fontFamily: "Poppins_500Medium", marginBottom: 5, fontSize: 12 }}>Work Description : </Text>

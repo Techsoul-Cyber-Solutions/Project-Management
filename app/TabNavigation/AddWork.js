@@ -168,8 +168,8 @@ const AddWork = ({navigation}) => {
                     </TouchableOpacity>
                   </View>
                   <Text style={styles.modalText}>Task Name : </Text>
-                  <View style={styles.pickerContainer}>
-                    <Picker
+                  {/* <View style={styles.pickerContainer}> */}
+                    {/* <Picker
                       selectedValue={taskName}
                       style={styles.picker}
                       onValueChange={(itemValue) => {
@@ -180,8 +180,15 @@ const AddWork = ({navigation}) => {
                       <Picker.Item label="Select Task" value="Select Task" style={{ fontSize: 13 }} />
                       <Picker.Item label="Frontend Designing" value="Frontend Designing" style={{ fontSize: 13 }} />
                       <Picker.Item label='None' value="None" style={{ fontSize:13}}/>
-                    </Picker>
-                  </View>
+                    </Picker> */}
+                  <TextInput
+                    style={[styles.textInput]}
+                    placeholderTextColor={Colors.gray}
+                    value={taskName}
+                    onChangeText={setTaskName}
+                    cursorColor={Colors.purple}
+                  />
+                  {/* </View> */}
                   <Text style={styles.modalText}>Status : </Text>
                   <View style={styles.pickerContainer}>
                     <Picker
@@ -269,7 +276,6 @@ const AddWork = ({navigation}) => {
                     value={taskDescription}
                     onChangeText={setTaskDescription}
                     cursorColor={Colors.purple}
-                    
                   />
                   <Text style={styles.modalText}>Status : </Text>
                   <View style={styles.pickerContainer}>

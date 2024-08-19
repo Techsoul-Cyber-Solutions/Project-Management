@@ -79,7 +79,7 @@ const LoginScreen = ({navigation}) => {
   return (
     <SafeAreaView style={{flex:1,backgroundColor:Colors.white}}>
       <StatusBar backgroundColor={Colors.white} barStyle='dark-content' />
-      <ScrollView contentContainerStyle={{flexGrow:1}} keyboardShouldPersistTaps={'handled'}>
+      <ScrollView contentContainerStyle={{flexGrow:1}} keyboardShouldPersistTaps={'handled'} showsVerticalScrollIndicator={false}>
         <View style={{flex:1,padding:15,paddingTop:65}}>
           <Text style={styles.title}>Sign In</Text>
           <View style={{gap:5}}>

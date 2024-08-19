@@ -42,7 +42,7 @@ const Profile = ({navigation}) => {
   return (
     <SafeAreaView style={{flex:1,}}>
       <StatusBar backgroundColor={Colors.white} barStyle='dark-content' />
-      <ScrollView contentContainerStyle={{flexGrow:1}}>
+      <ScrollView contentContainerStyle={{flexGrow:1}} showsVerticalScrollIndicator={false}>
         <View style={{flex:1,}}>
           <View style={{width:"100%",padding:20,flexDirection:"row",backgroundColor:Colors.white,}}>
             <View style={{width:"25%",alignItems:"center",justifyContent:"flex-end"}}>
@@ -145,14 +145,14 @@ const Profile = ({navigation}) => {
             visible={logoutModal}>
             <Pressable style={styles.centeredView} >
               <View style={[styles.modalView,{width:"95%"}]}>
-                <Text style={{ fontFamily: "Poppins_600SemiBold",color:Colors.purple,marginBottom:10}}>Logout</Text>
+                <Text style={logoutHeading}>Logout</Text>
                 <Text style={{fontFamily:"Poppins_500Medium",marginBottom:20,color:Colors.grey}}>Are you sure want to log out?</Text>
                 <View style={{flexDirection:"row",justifyContent:"space-between",width:"100%"}}>
-                  <TouchableOpacity style={{padding:10,backgroundColor:Colors.purple,borderWidth:1,borderColor:Colors.purple,borderRadius:10,width:"45%",alignItems:"center",justifyContent:"center"}} onPress={() => setLogoutModal(false)} >
-                    <Text style={{ fontFamily: "Poppins_600SemiBold", color: Colors.white }}>Cancel</Text>
+                  <TouchableOpacity style={styles.cancelButton} onPress={() => setLogoutModal(false)} >
+                    <Text style={cancelText}>Cancel</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={{padding:10,backgroundColor:Colors.white,borderWidth:1,borderColor:Colors.purple,borderRadius:10,width:"45%",alignItems:"center",justifyContent:"center"}} onPress={handleLogout}>
-                    <Text style={{fontFamily: "Poppins_600SemiBold", color: Colors.purple}}>Logout</Text>
+                  <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+                    <Text style={logoutText}>Logout</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -197,7 +197,7 @@ const Profile = ({navigation}) => {
                     cursorColor={Colors.purple} 
                     keyboardType='numeric'
                   />
-                  <TouchableOpacity style={{ backgroundColor: Colors.purple, padding: 10, alignItems: "center", justifyContent: "center", margin: 20, marginLeft: 30, marginRight: 30, borderRadius: 5, flexDirection: "row", gap: 5 }} >
+                  <TouchableOpacity style={styles.submitButton} >
                     <Text style={{ fontFamily: "Poppins_600SemiBold", color: Colors.white }}>Submit</Text>
                   </TouchableOpacity>
                 </View>
@@ -317,4 +317,49 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     backgroundColor: Colors.white,
   },
+  submitButton:{
+    backgroundColor: Colors.purple, 
+    padding: 10, 
+    alignItems: "center", 
+    justifyContent: "center", 
+    margin: 20, 
+    marginLeft: 30,
+    marginRight: 30,
+    borderRadius: 5,
+    flexDirection: "row",
+    gap: 5 
+  },
+  logoutButton:{
+    padding:10,
+    backgroundColor:Colors.white,
+    borderWidth:1,
+    borderColor:Colors.purple,
+    borderRadius:10,
+    width:"45%",
+    alignItems:"center",
+    justifyContent:"center"
+  },
+  cancelButton:{
+    padding:10,
+    backgroundColor:Colors.purple,
+    borderWidth:1,
+    borderColor:Colors.purple,
+    borderRadius:10,
+    width:"45%",
+    alignItems:"center",
+    justifyContent:"center"
+  },
+  logoutText:{
+    fontFamily: "Poppins_600SemiBold",
+    color: Colors.purple
+  },
+  logoutHeading:{
+    fontFamily: "Poppins_600SemiBold",
+    color:Colors.purple,
+    marginBottom:10
+  },
+  cancelText:{
+    fontFamily: "Poppins_600SemiBold", 
+    color: Colors.white 
+  }
 })

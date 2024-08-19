@@ -79,7 +79,7 @@ const Home = ({navigation}) => {
   return (
     <SafeAreaView style={{flex:1}}>
       <StatusBar backgroundColor={Colors.backGround} barStyle='dark-content' />
-      <ScrollView contentContainerStyle={{flexGrow:1,backgroundColor:Colors.backGround}}> 
+      <ScrollView contentContainerStyle={{flexGrow:1,backgroundColor:Colors.backGround}} showsVerticalScrollIndicator={false}> 
         <View style={{flex:1,padding:15}}>
           <View style={styles.subContainer}>
             <View style={{flexDirection:"row",width:"80%"}}>
