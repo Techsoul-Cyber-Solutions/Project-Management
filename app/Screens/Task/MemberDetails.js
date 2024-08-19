@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View ,ScrollView,StatusBar,Image,TouchableOpacity,FlatList,Linking} from 'react-native'
+import { StyleSheet, Text, View ,ScrollView,StatusBar,Image,TouchableOpacity,FlatList,Linking,Platform} from 'react-native'
 import React,{useState} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Colors from '../../Constants/Colors'
@@ -39,59 +39,73 @@ const MemberDetails = ({route,navigation}) => {
             return Colors.black;
         }
       }
-      const handleMessage = () => {
-        let phoneNumber = '9072374815';
-        let url = `whatsapp://send?phone=${phoneNumber}`;      
-        Linking.openURL(url).catch((err) => {
-            console.error("Failed to open WhatsApp", err);
-        });
-    }
+    
+    const handleMessage = () => {
+      let phoneNumber = '9072374815';
+      let url = `whatsapp://send?phone=${phoneNumber}`;
+      
+      Linking.openURL(url).catch((err) => {
+          console.error("Failed to open WhatsApp", err);
+  
+          if (Platform.OS === 'android') {
+              // Navigate to Google Play Store
+              Linking.openURL("market://details?id=com.whatsapp").catch((err) => {
+                  console.error("Failed to open Play Store", err);
+              });
+          } else if (Platform.OS === 'ios') {
+              // Navigate to Apple App Store
+              Linking.openURL("https://apps.apple.com/app/whatsapp-messenger/id310633997").catch((err) => {
+                  console.error("Failed to open App Store", err);
+              });
+          }
+      });
+  };
   return (
     <SafeAreaView style={{flex:1,backgroundColor:Colors.backGround}}>
-        <StatusBar backgroundColor={Colors.white} barStyle='dark-content' />
-        <ScrollView contentContainerStyle={{flexGrow:1}}>
-            <View style={{flex:1}}>
-                <View style={{width:"100%",padding:20,flexDirection:"row",backgroundColor:Colors.white,}}>
-                    <View style={{width:"25%",alignItems:"center",justifyContent:"center"}}>
-                      <Text style={{color:Colors.purple,fontFamily:"Poppins_600SemiBold",fontSize:15}}>3</Text>
-                      <Text style={{fontFamily:"Poppins_400Regular",fontSize:12}}>Completed Task</Text>
-                    </View>
-                    <View style={{width:"50%",alignItems:"center",justifyContent:"center"}}>
-                      <Image style={{width:90,height:90,borderRadius:75}} source={require('../../../assets/Images/emp2.jpg')}/>
-                      <Text style={{fontFamily:"Poppins_500Medium",fontSize:12}}>{item.memberName}</Text>
-                      <Text style={{fontFamily:"Poppins_400Regular",fontSize:12}}>{item.position}</Text>
-                      <TouchableOpacity style={{padding:10,backgroundColor:Colors.purple,borderRadius:10}} onPress={handleMessage}>
-                        <Text style={{color:Colors.white,fontFamily:"Poppins_500Medium",fontSize:12,paddingLeft:15,paddingRight:15}}>Message</Text>
-                      </TouchableOpacity>
-                    </View>
-                    <View style={{width:"25%",alignItems:"center",justifyContent:"center"}}>
-                      <Text style={{color:Colors.purple,fontFamily:"Poppins_600SemiBold",fontSize:15}}>3</Text>
-                      <Text style={{fontFamily:"Poppins_400Regular",fontSize:12}}>Ongoing Task</Text>
-                    </View>
-                </View>
-                <View style={{padding:15}}>
-                    <Text style={{fontFamily:"Poppins_700Bold"}}>All Projects</Text>
-                    <FlatList
-                        data={filteredData}
-                        keyExtractor={(item, index) => index.toString()}
-                        showsVerticalScrollIndicator={false}
-                        renderItem={({ item }) => (
-                           <TouchableOpacity style={styles.taskContainer} onPress={() => navigation.navigate("ProjectDetails",{item})}>
-                                <View style={{ flexDirection: "row" }}>
-                                   <View style={{ paddingLeft: 10 ,}}>
-                                       <Text style={styles.taskTitle}>{item.title}</Text>
-                                       <Text style={styles.projectTitle}>{item.customerName}</Text>
-                                       <Text style={{fontSize:12,fontFamily:"Poppins_500Medium",color:item.status === 'Completed'?Colors.success:Colors.purple}}>{item.status}</Text>
-                                       <OverlappingImages images={item.teamMembers.map(member => member.image)} />
-                                   </View>
-                                </View>
-                                <Text style={[styles.priority, { color: getPriorityColor(item.priority) }]}>{item.priority}</Text>
-                           </TouchableOpacity>
-                        )}
-                    />
-                </View>
+      <StatusBar backgroundColor={Colors.white} barStyle='dark-content' />
+      <ScrollView contentContainerStyle={{flexGrow:1}}>
+        <View style={{flex:1}}>
+          <View style={{width:"100%",padding:20,flexDirection:"row",backgroundColor:Colors.white,}}>
+            <View style={{width:"25%",alignItems:"center",justifyContent:"center"}}>
+              <Text style={{color:Colors.purple,fontFamily:"Poppins_600SemiBold",fontSize:15}}>3</Text>
+              <Text style={{fontFamily:"Poppins_400Regular",fontSize:12}}>Completed Task</Text>
             </View>
-        </ScrollView>
+            <View style={{width:"50%",alignItems:"center",justifyContent:"center"}}>
+              <Image style={{width:90,height:90,borderRadius:75}} source={require('../../../assets/Images/emp2.jpg')}/>
+              <Text style={{fontFamily:"Poppins_500Medium",fontSize:12}}>{item.memberName}</Text>
+              <Text style={{fontFamily:"Poppins_400Regular",fontSize:12}}>{item.position}</Text>
+              <TouchableOpacity style={{padding:10,backgroundColor:Colors.purple,borderRadius:10}} onPress={handleMessage}>
+                <Text style={{color:Colors.white,fontFamily:"Poppins_500Medium",fontSize:12,paddingLeft:15,paddingRight:15}}>Message</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{width:"25%",alignItems:"center",justifyContent:"center"}}>
+              <Text style={{color:Colors.purple,fontFamily:"Poppins_600SemiBold",fontSize:15}}>3</Text>
+              <Text style={{fontFamily:"Poppins_400Regular",fontSize:12}}>Ongoing Task</Text>
+            </View>
+          </View>
+          <View style={{padding:15}}>
+            <Text style={{fontFamily:"Poppins_700Bold"}}>All Projects</Text>
+            <FlatList
+              data={filteredData}
+              keyExtractor={(item, index) => index.toString()}
+              showsVerticalScrollIndicator={false}
+              renderItem={({ item }) => (
+                <TouchableOpacity style={styles.taskContainer} onPress={() => navigation.navigate("ProjectDetails",{item})}>
+                  <View style={{ flexDirection: "row" }}>
+                    <View style={{ paddingLeft: 10 ,}}>
+                      <Text style={styles.taskTitle}>{item.title}</Text>
+                      <Text style={styles.projectTitle}>{item.customerName}</Text>
+                      <Text style={{fontSize:12,fontFamily:"Poppins_500Medium",color:item.status === 'Completed'?Colors.success:Colors.purple}}>{item.status}</Text>
+                      <OverlappingImages images={item.teamMembers.map(member => member.image)} />
+                    </View>
+                  </View>
+                  <Text style={[styles.priority, { color: getPriorityColor(item.priority) }]}>{item.priority}</Text>
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   )
 }

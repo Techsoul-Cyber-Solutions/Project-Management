@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View,StatusBar,ScrollView,TextInput,TouchableOpacity,Button,Modal, Dimensions, Pressable ,FlatList} from 'react-native'
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Picker } from '@react-native-picker/picker'
 import DateTimePicker from '@react-native-community/datetimepicker'
@@ -9,22 +9,47 @@ import * as DocumentPicker from 'expo-document-picker'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Toast from 'react-native-toast-message';
 import toastConfig from '../Constants/toastConfig';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Checkbox from 'expo-checkbox';
+import MultiSelect from 'react-native-multiple-select';
 const{width,height} = Dimensions.get("screen");
 
 const AddWork = ({navigation}) => {
-  const [taskDescription, setTaskDescription] = useState('')
-  const [status, setStatus] = useState('Select Status')
+  const [taskDescription, setTaskDescription] = useState('');
+  const [status, setStatus] = useState('Select Status');
   const [startTime, setStartTime] = useState(null); 
   const [endTime, setEndTime] = useState(null); 
-  const [showStartPicker, setShowStartPicker] = useState(false)
-  const [showEndPicker, setShowEndPicker] = useState(false)
-//   const [image, setImage] = useState(null)
-//   const [file, setFile] = useState(null)
+  const [showStartPicker, setShowStartPicker] = useState(false);
+  const [showEndPicker, setShowEndPicker] = useState(false);
   const [fileName, setFileName] = useState([]);
   const [modalVisible,setModalVisible] = useState(false);
   const [completeModal,setCompleteModal] = useState(false);
   const [submittedTasks, setSubmittedTasks] = useState([]);
-  const [taskName,setTaskName] = useState('')
+  const [taskName,setTaskName] = useState('');
+  const [userRole,setUserRole] = useState('');
+  const [assignTaskModal,setAssignTaskModal] = useState(false);
+  const [taskStatus,setTaskStatus] = useState('Select Status')
+  const [selectedEmployees, setSelectedEmployees] = useState([]);
+  const [employeeModalVisible, setEmployeeModalVisible] = useState(false);
+
+  const retrieveData = async () =>{
+    const username = await AsyncStorage.getItem('username');
+    console.log(username,"username in profile");
+    setUserRole(username);
+  }
+  const employees = [
+    { id: 1, name: 'Employee 1' },
+    { id: 2, name: 'Employee 2' },
+    { id: 3, name: 'Employee 3' },
+  ];
+
+  useEffect(() => {
+    retrieveData();
+  },[]);
+
+  useEffect(() =>{
+    console.log(userRole,"userRole in Add work");
+  },[userRole]);
 
   const onChangeStart = (event, selectedDate) => {
     const currentDate = selectedDate || startTime
@@ -47,7 +72,6 @@ const AddWork = ({navigation}) => {
   
   const formatTime = (date) => {
     if (!date) return null;
-
     let hours = date.getHours();
     let minutes = date.getMinutes();
     const ampm = hours >= 12 ? 'PM' : 'AM';
@@ -56,12 +80,11 @@ const AddWork = ({navigation}) => {
     minutes = minutes < 10 ? '0' + minutes : minutes;
     return hours + ':' + minutes + ' ' + ampm;
   };
+
   const handleFileDelete = (fileToDelete) => {
     setFileName(fileName.filter(file => file.name !== fileToDelete));
   };
-//   const handleSubmit= () =>{
-//     setModalVisible(false)
-//   }
+
   const handleSubmit = () => {
     if(taskDescription === '' || status === '' || startTime === '' || endTime === '' || fileName === ''){
       Toast.show({
@@ -91,20 +114,28 @@ const AddWork = ({navigation}) => {
       <Text style={styles.taskTitle}> {item.taskDescription}</Text>
       <Text>Status: {item.status}</Text>
       <Text style={styles.projectTitle}>{formatTime(item.startTime)} -{formatTime(item.endTime)} </Text>
-      {/* <Text>Files:</Text>
-      {item.fileName.map((file, index) => (
-        <Text key={index} style={{ marginLeft: 10 }}>
-          - {file.name}
-        </Text> */}
-      {/* ))} */}
     </View>
   );
+  const handleWork = () =>{
+    if(userRole === 'admin'){
+      setAssignTaskModal(true)
+    } else {
+      setModalVisible(true)
+    }
+  }
+  const toggleEmployeeSelection = (employeeId) => {
+    if (selectedEmployees.includes(employeeId)) {
+      setSelectedEmployees(selectedEmployees.filter(id => id !== employeeId));
+    } else {
+      setSelectedEmployees([...selectedEmployees, employeeId]);
+    }
+  };
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar backgroundColor={Colors.white} barStyle='dark-content' />
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={{ flex: 1, padding: 15 }}>
-          <TouchableOpacity style={{padding:10,borderWidth:.5,borderColor:Colors.white,flexDirection:"row",alignItems:"center",gap:10,backgroundColor:Colors.white,elevation:2,borderRadius:10}} onPress={() => setModalVisible(true)}>
+          <TouchableOpacity style={{padding:10,borderWidth:.5,borderColor:Colors.white,flexDirection:"row",alignItems:"center",gap:10,backgroundColor:Colors.white,elevation:2,borderRadius:10}} onPress={handleWork}>
             <View style={{backgroundColor:Colors.purple,width:45,height:45,borderRadius:25,alignItems:"center",justifyContent:"center"}}>
               <AntDesign name="plus" size={19} color={Colors.white} />
             </View>
@@ -121,6 +152,88 @@ const AddWork = ({navigation}) => {
             keyExtractor={(item, index) => index.toString()}
             style={{ marginTop: 10 }}
           />
+          <Modal
+            animationType='slide'
+            transparent={true}
+            visible={assignTaskModal}
+          >
+           <Pressable style={styles.centeredView} >
+              <ScrollView contentContainerStyle={styles.scrollView} style={{width:"100%",}}>
+                <View style={styles.modalView}>
+                  <View style={styles.addWorkContainer}>
+                    <Text style={[styles.close,{color:Colors.white}]}>Close</Text>
+                    <Text style={styles.title}>Assign Task</Text>
+                    <TouchableOpacity onPress={() => setAssignTaskModal(false)}>
+                      <Text style={styles.close}>Close</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <Text style={styles.modalText}>Task Name : </Text>
+                  <View style={styles.pickerContainer}>
+                    <Picker
+                      selectedValue={taskName}
+                      style={styles.picker}
+                      onValueChange={(itemValue) => {
+                        if (itemValue !== 'Select Task') {
+                          setTaskName(itemValue);
+                        }
+                      }}>
+                      <Picker.Item label="Select Task" value="Select Task" style={{ fontSize: 13 }} />
+                      <Picker.Item label="Frontend Designing" value="Frontend Designing" style={{ fontSize: 13 }} />
+                      <Picker.Item label='None' value="None" style={{ fontSize:13}}/>
+                    </Picker>
+                  </View>
+                  <Text style={styles.modalText}>Status : </Text>
+                  <View style={styles.pickerContainer}>
+                    <Picker
+                      selectedValue={taskStatus}
+                      style={styles.picker}
+                      onValueChange={(itemValue) => {
+                        setTaskStatus(itemValue);
+                      }}
+                    >
+                      <Picker.Item label="Select Status" value="" style={{ fontSize: 13 }} />
+                      <Picker.Item label="Gradual" value="Gradual" style={{ fontSize: 13 }} />
+                      <Picker.Item label="Immediate" value="Immediate" style={{ fontSize: 13 }} />
+                    </Picker>
+                  </View>
+                  <Text style={styles.modalText}>Assign To : </Text>
+                  {/* <View style={[styles.pickerContainer,{backgroundColor:"grey",marginBottom:0,justifyContent:"center"}]}> */}
+                  <MultiSelect
+                    items={employees}
+                    uniqueKey="id"
+                    onSelectedItemsChange={(selectedItems) => setSelectedEmployees(selectedItems)}
+                    selectedItems={selectedEmployees}
+                    selectText="Select Employees"
+                    searchInputPlaceholderText="Search Employees"
+                    tagRemoveIconColor="#CCC"
+                    tagBorderColor="#CCC"
+                    tagTextColor="#000"
+                    selectedItemTextColor={Colors.purple}
+                    selectedItemIconColor={Colors.purple}
+                    itemTextColor="#000"
+                    displayKey="name"
+                    searchInputStyle={{ color: '#CCC' }}
+                    submitButtonColor={Colors.purple}
+                    submitButtonText="Done"
+                    hideTags
+                    //  altFontFamily="ProximaNova-Light"
+                    styleItemsContainer={{margin:10,}}
+                    styleInputGroup={{padding:10,borderRadius:10}}
+                    styleMainWrapper={{justifyContent:"center"}}
+                    styleRowList={{}}
+                    styleSelectorContainer={{}}
+                    styleDropdownMenu={{}}
+                    styleDropdownMenuSubsection={{borderRadius:10,alignSelf:"center",height:50,borderColor:Colors.grey,borderWidth:.5,padding:10,paddingLeft:15,}}
+                  
+                  />
+                  <TouchableOpacity style={{ backgroundColor: Colors.purple, padding: 10, alignItems: "center", justifyContent: "center", margin: 20, marginLeft: 30, marginRight: 30, borderRadius: 5, flexDirection: "row", gap: 5 }} onPress={handleSubmit} >
+                    <Text style={{ fontFamily: "Poppins_600SemiBold", color: Colors.white }}>Submit</Text>
+                  </TouchableOpacity>
+                  {/* </View>   */}
+                </View>
+              </ScrollView>
+            </Pressable>
+          </Modal>
           <Modal
             animationType="slide"
             transparent={true}
@@ -221,7 +334,6 @@ const AddWork = ({navigation}) => {
                 </View>
               </ScrollView>
               <Toast position='bottom' bottomOffset={20} config={toastConfig} />
-
             </Pressable>
           </Modal>
           <Modal
@@ -243,7 +355,6 @@ const AddWork = ({navigation}) => {
               </View>
             </Pressable>
           </Modal>
-          
         </View>
       </ScrollView>
       <TouchableOpacity style={{ backgroundColor: Colors.purple, padding: 10, alignItems: "center", justifyContent: "center", margin: 20, marginLeft: 30, marginRight: 30, borderRadius: 5, flexDirection: "row", gap: 5 }} onPress={() => setCompleteModal(true)}>
@@ -398,5 +509,36 @@ const styles = StyleSheet.create({
      justifyContent: "space-between",
      marginTop: 10,
      marginBottom: 10 
-  }
+  },
+  assignToText: {
+    color: Colors.primary,
+    fontSize: 13,
+    padding:10
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 18,
+    marginBottom: 20,
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    marginBottom: 10,
+    alignItems: 'center',
+  },
+  label: {
+    marginLeft: 10,
+    fontSize: 16,
+  },
 })

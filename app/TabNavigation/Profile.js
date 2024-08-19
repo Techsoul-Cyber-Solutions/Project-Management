@@ -17,7 +17,10 @@ const Profile = ({navigation}) => {
   const [isLoading,setLoading] = useState(false);
   const [logoutModal,setLogoutModal] = useState(false);
   const [userRole,setUserRole] = useState('');
-
+  const [editModal,setEditModal] = useState(false);
+  const [showName,setName] = useState('');
+  const [showEmail,setEmail] = useState('');
+  const [showNumber,setNumber] = useState('');
   const handleLogout = async () => {
     await AsyncStorage.clear();
     navigation.reset({
@@ -57,7 +60,7 @@ const Profile = ({navigation}) => {
             </View>
           </View>
           <View style={{marginTop:10,padding:15}}>
-           <TouchableOpacity style={styles.itemContainer} >
+           <TouchableOpacity style={styles.itemContainer} onPress={() => setEditModal(true)}>
               <View style={styles.itemSubContainer}>
                 <View style={styles.itemImageContainer}>
                   <MaterialCommunityIcons name="account-edit-outline" size={24} color={Colors.purple} />
@@ -155,6 +158,52 @@ const Profile = ({navigation}) => {
               </View>
             </Pressable>
           </Modal>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={editModal}>
+            <Pressable style={styles.centeredView} >
+              <ScrollView contentContainerStyle={styles.scrollView} style={{width:"100%",}}>
+                <View style={styles.modalView}>
+                  <View style={styles.addWorkContainer}>
+                    <Text style={[styles.close,{color:Colors.white}]}>Close</Text>
+                    <Text style={styles.title}>Edit Profile</Text>
+                    <TouchableOpacity onPress={() => setEditModal(false)}>
+                      <Text style={styles.close}>Close</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <Text style={styles.modalText}>Name : </Text>
+                  <TextInput
+                    style={styles.textInput}
+                    placeholderTextColor={Colors.gray}
+                    value={showName}
+                    onChangeText={setName}
+                    cursorColor={Colors.purple} 
+                  />
+                  <Text style={styles.modalText}>Email : </Text>
+                  <TextInput
+                    style={styles.textInput}
+                    placeholderTextColor={Colors.gray}
+                    value={showEmail}
+                    onChangeText={setEmail}
+                    cursorColor={Colors.purple} 
+                  />
+                   <Text style={styles.modalText}>Phone : </Text>
+                  <TextInput
+                    style={styles.textInput}
+                    placeholderTextColor={Colors.gray}
+                    value={showNumber}
+                    onChangeText={setNumber}
+                    cursorColor={Colors.purple} 
+                    keyboardType='numeric'
+                  />
+                  <TouchableOpacity style={{ backgroundColor: Colors.purple, padding: 10, alignItems: "center", justifyContent: "center", margin: 20, marginLeft: 30, marginRight: 30, borderRadius: 5, flexDirection: "row", gap: 5 }} >
+                    <Text style={{ fontFamily: "Poppins_600SemiBold", color: Colors.white }}>Submit</Text>
+                  </TouchableOpacity>
+                </View>
+              </ScrollView>
+            </Pressable>
+          </Modal>
           </View>
       </ScrollView>
     </SafeAreaView>
@@ -231,5 +280,41 @@ const styles = StyleSheet.create({
     height:40,
     alignItems:"center",
     justifyContent:"center",
-  }
+  },
+  addWorkContainer:{
+    justifyContent:"space-between",
+    flexDirection:"row",
+    marginBottom:15
+  },
+  close:{
+    fontFamily:"Poppins_400Regular",
+    fontSize:13,
+    color:Colors.purple,
+    textTransform:"uppercase"
+  },
+  title: {
+    fontFamily:"Poppins_600SemiBold",
+    color: Colors.purple,
+    textAlign: 'center',
+    fontSize:16,
+    textTransform:"uppercase"
+  },
+  modalText:{
+    fontFamily: "Poppins_500Medium",
+    marginBottom: 5,
+    fontSize: 12
+  },
+  scrollView:{
+    flexGrow:1,
+    alignItems:"center",
+    justifyContent:"center"
+  },
+  textInput: {
+    borderColor: Colors.grey,
+    borderWidth: .5,
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 16,
+    backgroundColor: Colors.white,
+  },
 })
